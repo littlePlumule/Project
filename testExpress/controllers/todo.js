@@ -1,17 +1,21 @@
 const todoModel = require("../models/todo");
 const todoController = {
     getAll: (req, res) => {
-        const todos = todoModel.getAll();
-        res.render("todos", { //res.render(去view裡面找甚麼資料, {要帶的資料})
-            todos: todos
+        todoModel.getAll((err, results) => {
+            if (err) return console.log(err);
+            res.render("todos", { //res.render(去view裡面找甚麼資料, {要帶的資料})
+                todos: results
+            });
         });
     },
 
     get: (req, res) => {
         const id = req.params.id;
-        const todo = todoModel.get(id);
-        res.render("todo", {
-            todo: todo
+        todoModel.get(id, (err, results) => {
+            if (err) return console.log(err);
+            res.render("todo", {
+                todo: results[0]
+            });
         });
     }
 }
