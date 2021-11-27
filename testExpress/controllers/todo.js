@@ -17,6 +17,18 @@ const todoController = {
                 todo: results[0]
             });
         });
+    },
+
+    newTodo: (req, res) => {
+        const content = req.body.content;
+        todoModel.add(content, err => {
+            if (err) return console.log(err);
+            res.redirect('/todos');
+        })
+    },
+
+    addTodo: (req, res) => {
+        res.render('addTodo');
     }
 }
 module.exports = todoController;
