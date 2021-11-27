@@ -6,6 +6,7 @@ const db = require('./db'); //引入mysql
 const app = express();
 const port = 5001; //設定port
 const todoController = require("./controllers/todo");
+const userController = require("./controllers/user");
 
 app.set("view engine", "ejs"); //要使用甚麼引擎
 app.use(session({
@@ -17,34 +18,50 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(flash());
 app.use((req, res, next) => {
-    res.locals.isLogin = req.session.isLogin;
-    res.locals.errorMessage = req.flash("errorMessage");
-    next();
-})
+        res.locals.username = req.session.username;
+        res.locals.errorMessage = req.flash("errorMessage");
+        next();
+    })
+    // app.use((req, res, next) => {
+    //     res.locals.isLogin = req.session.isLogin;
+    //     res.locals.errorMessage = req.flash("errorMessage");
+    //     next();
+    // })
+function redirectBack(req, res) {
+    res.redirect("back");
+}
 
 // app.get("/", (req, res) => { //app.method("網址", callback)
 //     res.send("index"); //輸出
 // })
+// app.get("/", todoController.addTodo);
+app.get("/", (req, res) => {
+    res.render("index");
+})
 app.post("/todos", todoController.newTodo);
-app.get("/", todoController.addTodo);
 app.get("/todos", todoController.getAll);
 app.get("/todos/:id", todoController.get);
-app.get("/login", (req, res) => {
-    res.render("login");
-})
-app.post("/login", (req, res) => {
-    if (req.body.password === "abc") {
-        req.session.isLogin = true;
-        res.redirect("/");
-    } else {
-        req.flash("errorMessage", "Please input the correct password");
-        res.redirect("login");
-    }
-})
-app.get("/logout", (req, res) => {
-    req.session.isLogin = false;
-    res.redirect("/");
-})
+app.get("/login", userController.login);
+app.post("/login", userController.handleLogin, redirectBack);
+app.get("/logout", userController.logout);
+app.get("/register", userController.register);
+app.post("/register", userController.handleRegister, redirectBack);
+// app.get("/login", (req, res) => {
+//     res.render("login");
+// })
+// app.post("/login", (req, res) => {
+//     if (req.body.password === "abc") {
+//         req.session.isLogin = true;
+//         res.redirect("/");
+//     } else {
+//         req.flash("errorMessage", "Please input the correct password");
+//         res.redirect("login");
+//     }
+// })
+// app.get("/logout", (req, res) => {
+//     req.session.isLogin = false;
+//     res.redirect("/");
+// })
 
 
 app.listen(port, () => { //app.listen(port, callback)
