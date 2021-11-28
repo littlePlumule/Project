@@ -20,7 +20,12 @@ const commentController = {
             }
             res.render("index", { comments: results });
         })
-    }
+    },
 
+    delete: (req, res) => {
+        commentModel.delete(req.session.username, req.params.id, err => {
+            res.redirect("/");
+        })
+    }
 }
 module.exports = commentController;
