@@ -7,6 +7,7 @@ const app = express();
 const port = 5001; //設定port
 const todoController = require("./controllers/todo");
 const userController = require("./controllers/user");
+const commentController = require("./controllers/comment");
 
 app.set("view engine", "ejs"); //要使用甚麼引擎
 app.use(session({
@@ -35,9 +36,7 @@ function redirectBack(req, res) {
 //     res.send("index"); //輸出
 // })
 // app.get("/", todoController.addTodo);
-app.get("/", (req, res) => {
-    res.render("index");
-})
+app.get("/", commentController.index);
 app.post("/todos", todoController.newTodo);
 app.get("/todos", todoController.getAll);
 app.get("/todos/:id", todoController.get);
@@ -46,6 +45,7 @@ app.post("/login", userController.handleLogin, redirectBack);
 app.get("/logout", userController.logout);
 app.get("/register", userController.register);
 app.post("/register", userController.handleRegister, redirectBack);
+app.post("/comment", commentController.add);
 // app.get("/login", (req, res) => {
 //     res.render("login");
 // })
