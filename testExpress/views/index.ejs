@@ -1,28 +1,44 @@
-<h1>簡易會員系統</h1>
-<% if(username) {%>
-    Hello,
-    <%= username %>
-        <a href="/logout">登出</a>
-        <form method="POST" action="/comment">
-            <textarea name="content"></textarea>
-            <input type="submit" />
-        </form>
-        <% }else{ %>
-            <a href="/register">註冊</a>
-            <a href="/login">登入</a>
-            <% } %>
+<!DOCTYPE html>
+<html lang="en">
 
-                <% comments.forEach(function(comment) {%>
-                    <div>
-                        <h2>
-                            <%= comment.nickname %>
-                        </h2>
-                        <p>
-                            <%= comment.content %>
-                        </p>
-                        <% if(username === comment.username){ %>
-                            <a href="/update_comments/<%= comment.id %> ">編輯</a>
-                            <a href="/delete_comments/<%= comment.id %> ">刪除</a>
-                            <% } %>
+<head>
+    <%- include('./template/head.ejs') %>
+</head>
+
+<body>
+    <%- include('./template/navbar.ejs') %>
+        <div class="container">
+
+            <% if(username) {%>
+                <form method="POST" action="/comment">
+                    <div class="mb-3">
+                        <label class="form-label">留言內容</label>
+                        <textarea name="content" class="form-control"></textarea>
                     </div>
-                    <% }) %>
+                    <button type="submit" class="btn btn-primary">送出留言</button>
+                </form>
+                <% }else{ %>
+                    <a href="/register">註冊</a>
+                    <a href="/login">登入</a>
+                    <% } %>
+                        <% comments.forEach(function(comment) {%>
+                            <div class="card mt-2">
+                                <h5 class="card-header">
+                                    <%= comment.nickname %>
+                                </h5>
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <%= comment.content %>
+                                    </h5>
+                                    <% if(username === comment.username){ %>
+                                        <a class="btn btn-primary" href="/update_comments/<%= comment.id %> ">編輯</a>
+                                        <a class="btn btn-danger" href="/delete_comments/<%= comment.id %> ">刪除</a>
+                                        <% } %>
+                                </div>
+                            </div>
+                            <% }) %>
+        </div>
+
+</body>
+
+</html>

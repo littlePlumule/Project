@@ -8,27 +8,19 @@
 <body>
     <%- include('../template/navbar.ejs') %>
         <div class="container">
-            <h1>註冊頁面</h1>
+            <h1>登入頁面</h1>
             <% if(errorMessage && errorMessage > 0) {%>
                 <div class="alert alert-danger" role="alert">
                     <%= errorMessage %>
                 </div>
                 <% } %>
-                    <form method="POST" action="/register">
+                    <form method="POST" action="/login">
                         <div class="row g-3 align-items-center mt-2">
                             <div class="col-auto">
                                 <label for="inputUsername" class="col-form-label">username</label>
                             </div>
                             <div class="col-auto">
                                 <input type="text" id="inputUsername" class="form-control" name="username">
-                            </div>
-                        </div>
-                        <div class="row g-3 align-items-center mt-2">
-                            <div class="col-auto">
-                                <label for="inputNickname" class="col-form-label">nickname</label>
-                            </div>
-                            <div class="col-auto">
-                                <input type="text" id="inputNickname" class="form-control" name="nickname">
                             </div>
                         </div>
                         <div class="row g-3 align-items-center mt-2">
