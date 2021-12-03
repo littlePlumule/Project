@@ -1,2 +1,4 @@
 /testExpress/node_modules
 /testExpress/package-lock.json
+/testSequelize/node_modules
+/testSequelize/package-lock.json
