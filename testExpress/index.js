@@ -21,7 +21,6 @@ app.use(flash());
 app.use((req, res, next) => {
         res.locals.username = req.session.username;
         res.locals.errorMessage = req.flash("errorMessage");
-        console.log("req.session", req.session, "req.flash", req.flash)
         next();
     })
     // app.use((req, res, next) => {
