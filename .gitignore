@@ -3,3 +3,4 @@
 /testSequelize/node_modules
 /testSequelize/package-lock.json
 /testSequelize/config
+/testExpress/config

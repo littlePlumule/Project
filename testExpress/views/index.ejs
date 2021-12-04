@@ -20,13 +20,13 @@
                     <% comments.forEach(function(comment) {%>
                         <div class="card mt-2">
                             <h5 class="card-header">
-                                <%= comment.nickname %>
+                                <%= comment.User.nickname %>
                             </h5>
                             <div class="card-body">
                                 <h5 class="card-title">
                                     <%= comment.content %>
                                 </h5>
-                                <% if(username === comment.username){ %>
+                                <% if(username === comment.User.username){ %>
                                     <a class="btn btn-primary" href="/update_comments/<%= comment.id %> ">編輯</a>
                                     <a class="btn btn-danger" href="/delete_comments/<%= comment.id %> ">刪除</a>
                                     <% } %>

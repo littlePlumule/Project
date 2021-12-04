@@ -1,6 +1,7 @@
-const userModel = require("../models/user");
 const bcrypt = require('bcrypt'); //引入bcrypt
 const saltRounds = 10;
+const db = require("../models");
+const User = db.User;
 
 const userController = {
     login: (req, res) => {
@@ -13,11 +14,11 @@ const userController = {
             req.flash("errorMessage", "該填的沒填");
             return next();
         }
-        userModel.get(username, (err, user) => {
-            if (err) {
-                req.flash("errorMessage", err.toString());
-                return next();
+        User.findOne({
+            where: {
+                username: username
             }
+        }).then(user => {
             if (!user) {
                 req.flash("errorMessage", "帳密錯誤");
                 return next();
@@ -28,8 +29,12 @@ const userController = {
                     return next();
                 }
                 req.session.username = user.username;
+                req.session.userId = user.id;
                 res.redirect("/");
             });
+        }).catch(err => {
+            req.flash("errorMessage", err.toString());
+            return next();
         })
     },
 
@@ -48,17 +53,17 @@ const userController = {
                 req.flash("errorMessage", err.toString());
                 return next();
             }
-            userModel.add({
+            User.create({
                 username,
                 nickname,
                 password: hash
-            }, err => {
-                if (err) {
-                    req.flash("errorMessage", err.toString());
-                    return next();
-                }
+            }).then(user => {
                 req.session.username = username;
+                req.session.userId = user.id;
                 res.redirect("/");
+            }).catch(err => {
+                req.flash("errorMessage", err.toString());
+                return next();
             })
         });
     },
