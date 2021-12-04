@@ -21,6 +21,7 @@ app.use(flash());
 app.use((req, res, next) => {
         res.locals.username = req.session.username;
         res.locals.errorMessage = req.flash("errorMessage");
+        console.log("req.session", req.session, "req.flash", req.flash)
         next();
     })
     // app.use((req, res, next) => {
@@ -36,15 +37,18 @@ function redirectBack(req, res) {
 //     res.send("index"); //輸出
 // })
 // app.get("/", todoController.addTodo);
-app.get("/", commentController.index);
 app.post("/todos", todoController.newTodo);
 app.get("/todos", todoController.getAll);
 app.get("/todos/:id", todoController.get);
+
+app.get("/", commentController.index);
+
 app.get("/login", userController.login);
 app.post("/login", userController.handleLogin, redirectBack);
 app.get("/logout", userController.logout);
 app.get("/register", userController.register);
 app.post("/register", userController.handleRegister, redirectBack);
+
 app.post("/comment", commentController.add);
 app.get("/delete_comments/:id", commentController.delete);
 app.get("/update_comments/:id", commentController.update);

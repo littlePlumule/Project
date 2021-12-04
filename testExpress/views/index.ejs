@@ -8,22 +8,31 @@
 <body>
     <%- include('./template/navbar.ejs') %>
         <div class="container">
-            <% comments.forEach(function(comment) {%>
-                <div class="card mt-2">
-                    <h5 class="card-header">
-                        <%= comment.nickname %>
-                    </h5>
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <%= comment.content %>
-                        </h5>
-                        <% if(username === comment.username){ %>
-                            <a class="btn btn-primary" href="/update_comments/<%= comment.id %> ">編輯</a>
-                            <a class="btn btn-danger" href="/delete_comments/<%= comment.id %> ">刪除</a>
-                            <% } %>
+            <% if(username) { %>
+                <form method="POST" action="/comment">
+                    <div class="form-group">
+                        <label>留言內容</label>
+                        <textarea name="content" class="form-control"></textarea>
+                        <button type="submit" class="btn btn-primary mt-2">送出留言</button>
                     </div>
-                </div>
-                <% }) %>
+                </form>
+                <% } %>
+                    <% comments.forEach(function(comment) {%>
+                        <div class="card mt-2">
+                            <h5 class="card-header">
+                                <%= comment.nickname %>
+                            </h5>
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <%= comment.content %>
+                                </h5>
+                                <% if(username === comment.username){ %>
+                                    <a class="btn btn-primary" href="/update_comments/<%= comment.id %> ">編輯</a>
+                                    <a class="btn btn-danger" href="/delete_comments/<%= comment.id %> ">刪除</a>
+                                    <% } %>
+                            </div>
+                        </div>
+                        <% }) %>
         </div>
 
 </body>

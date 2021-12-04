@@ -9,7 +9,7 @@
     <%- include('../template/navbar.ejs') %>
         <div class="container">
             <h1>登入頁面</h1>
-            <% if(errorMessage && errorMessage > 0) {%>
+            <% if(errorMessage && errorMessage.length > 0) {%>
                 <div class="alert alert-danger" role="alert">
                     <%= errorMessage %>
                 </div>
