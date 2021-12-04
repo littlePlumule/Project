@@ -1,3 +1,11 @@
+const db = require('./models');
+const User = db.User;
+const Comment = db.Comment;
+User.create({ firstName: 'hello', lastName: 'yo' }).then(() => {
+    console.log("done");
+})
+
+/*
 const Sequelize = require('sequelize'); //引入Sequelize;
 const sequelize = new Sequelize('mydb', 'yuhung', 'yuhung', {
     host: 'localhost',
@@ -15,6 +23,7 @@ const User = sequelize.define('user', { //'user' -> db名稱
 }, {
     // options
 });
+
 const Comment = sequelize.define('comment', {
     content: {
         type: Sequelize.STRING
@@ -49,3 +58,4 @@ sequelize.sync().then(() => { //創建db sequelize.sync -> promise
         console.log(JSON.stringify(comment.user.firstName, null, 4))
     })
 })
+*/
