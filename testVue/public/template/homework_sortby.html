@@ -119,16 +119,19 @@
     <thead>
       <tr>
         <th>品名</th>
-        <th class="click">價格 
+        <th class="click" @click="turn(), type = 'price'" >價格 
           <!-- isReverse 為反轉 className -->
-          <span class="icon isReverse">
+          <span class="icon" :class="{'inverse': isReverse}" v-if="type == 'price'">
             <i class=" fas fa-angle-up text-success"></i>
           </span>
         </th>
-        <th class="click">到期日 
+        <th class="click" @click="turn(), type = 'expiryDate'">到期日 
+          <span class="icon" :class="{'inverse': isReverse}" v-if="type == 'expiryDate'">
+            <i class=" fas fa-angle-up text-success"></i>
+          </span>
         </th>
       </tr>
-      <tr v-for="item in data">
+      <tr v-for="(item, key) in itemSort" :key="item.name">
         <td>{{ item.name }}</td>
         <td>{{ item.price }}</td>
         <td>{{ item.expiryDate }}</td>
@@ -149,7 +152,6 @@
 //   // 詳細規則可參考 https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
 //   return (a === b ? 0 : a > b ? 1 : -1) * 正反排序數值
 // })
-
 var app = new Vue({
   el: '#app',
   data: {
@@ -180,9 +182,46 @@ var app = new Vue({
         expiryDate: 200
       }
     ],
+    isReverse: false,
+    type: ''
   },
   // 請在此撰寫 JavaScript
-  computed: {}
+  computed: {
+    itemSort: function () {
+      const vm = this;
+      /* let sortItem = vm.type;
+      let newData = vm.data.sort(function (a, b) {
+        a = a[sortItem];
+        b = b[sortItem];
+        if(vm.isReverse){
+          return a - b;
+        }else{
+          return b - a;
+        }
+      })
+      return newData; */
+      if (vm.type == ''){
+        return vm.data;
+      }else if (vm.type == 'price') {
+        return vm.data.sort(function (a, b) {
+          a = a.price;
+          b = b.price;
+          return vm.isReverse ? a - b : b - a;
+        })
+      }else if (vm.type == 'expiryDate'){
+        return vm.data.sort(function (a, b) {
+          a = a.expiryDate;
+          b = b.expiryDate;
+          return vm.isReverse ? a - b : b - a;
+        })
+      }
+    }
+  },
+  methods: {
+    turn: function () {
+      this.isReverse = !this.isReverse;
+    }
+  }
 });
 </script>
 
