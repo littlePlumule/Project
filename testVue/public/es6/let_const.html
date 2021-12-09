@@ -106,53 +106,59 @@
 <script>
 // #1
 // 修改 var -> let
-var mom = '老媽';
+/* console.log(mom);
+let mom = '老媽';
 (function () {
   console.log(mom);
-})();
+})(); */
 
 // #2
 // 修改 var -> let
-// function varMing () {
-//   var ming = '小明';
-//   if (true) {
-//     var ming = '杰哥';  
-//     // 這裡的 ming 依然是外層的小明，所以小明即將被取代
-//   }
-//   console.log(ming);  // '杰哥'
-// }
+// var 作用域: function scope
+// let 作用域: block scope
+/* function varMing () {
+  let ming = '小明';
+  if (true) {
+    let ming = '杰哥';  
+    // 這裡的 ming 依然是外層的小明，所以小明即將被取代
+  }
+  console.log(ming);  // '杰哥'
+}
+varMing() */
 
 
 // #3
 // 修改 var -> let
-// for (var i = 0; i < 10; i++) {
-//   console.log(i);
-//   setTimeout(function () {
-//     console.log('這執行第' + i + '次');
-//   }, 10);
-// }
+/* for (let i = 0; i < 10; i++) {
+  console.log(i);
+  setTimeout(function () {
+    console.log('這執行第' + i + '次');
+  }, 10);
+} */
 
 // #4
 // const
+// const 作用域: block scope
 // const ming = '鐵錚錚男子漢';
 
 // #5
 // const 與 物件
-// const family = {
-//   mom: '老媽',
-//   me: '小明',
-//   sister: '小橙'
-// };
-// family.father = '爸爸';
+/* const family = {
+  mom: '老媽',
+  me: '小明',
+  sister: '小橙'
+};
+family.father = '爸爸';
+console.log(family) */
 
 // #6
 // 額外問題，不使用 let，上述答案如何解答
-// for (var i = 0; i < 10; i++) {
-//   console.log(i);
-//   setTimeout(function () {
-//     console.log('這執行第' + i + '次');
-//   }, 10);
-// }
+for (var i = 0; i < 10; i++) {
+  console.log(i);
+  (function (i) {setTimeout(function () {
+    console.log('這執行第' + i + '次');
+  }, 1000 * i);})(i)
+}
 </script> 
         </div>
       </div>

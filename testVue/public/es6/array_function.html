@@ -119,33 +119,81 @@ const people = [
     name: '杰倫',
     money: 60000
   },
-  {
+  /* {
     name: '老媽',
-    money: Infinity
-  }
+    money: Infinity 
+  } */
 ];
 
-// forEach 與 map
+// forEach 不會回傳值 與 map 會回傳值
 // 將所有物件增加 icash 有多少金額的欄位
+/* for(let i = 0; i <people.length; i++){
+  console.log(people[i]);
+} */
+/* people.forEach(function (item, index, array) {
+  item.icash = item.money + 500;
+  console.log(item)
+}) */
 
+/* const newPeople = people.map(function (item, index, array) {
+  return {
+    ...item,
+    icash: item.money + 500
+  }
+})
+// const newPeople = people.map((item, index, array) => ({...item, icash:item.money +500}))
+console.log(newPeople) */
 
-// filter
+// filter 只回傳是 true 的值 , 若回傳是 false 則回傳空陣列 
 // 挑出金額少於 5000 的物件
+/* const filterPeople = people.filter( function (item, index) {
+  if(item.money < 5000){
+    return true;
+  }
+})
+// const filterPeople = people.filter( (item, index) => item.money < 5000)
+console.log(filterPeople); */
 
-// find
+// find 只回傳一次, 適合塞選特定的值
 // 1. 找到金額 = 500 的物件
 // 2. 找到 > 5000 的物件
+/* const findPeople = people.find( function (item, index) {
+  if(item.money === 500){
+    return true;
+  }
+})
+// const findPeople = people.find( item => item.money === 500)
+console.log(findPeople); */
 
-// every
+// every 所有結果都為 true, return 才會是 true
 // 1. 所有物件是否都超過 10000 元
 // 2. 是否所有物件超過 300 元
+/* const everyPeople = people.every(function (item, index) {
+  if(item.money > 10000){
+    return true
+  }
+})
+// const everyPeople = people.every(item => item.money > 10000)
+console.log(everyPeople) */
 
-// some
+// some 部分結果為 true, return 就會是 true
 // 1. 是否有物件超過 10000 元
 // 2. 是否有物件持有金額少於 300元
-
-// reduce
+/* const somePeople = people.some(function (item, index) {
+  if(item.money > 10000){
+    return true
+  }
+})
+// const somePeople = people.some(item => item.money > 10000)
+console.log(somePeople)*/
+ 
+// reduce (function (前一個值, 當前的值, index) {},前一個值預設)
 // 去除掉老媽，請問剩下的人有多少錢？
+/* const reducePeople = people.reduce(function (prev, item, index) {
+  return prev + item.money
+}, 0)
+// const reducePeople = people.reduce((prev, item, index) => {return prev + item.money}, 0)
+console.log('total:', reducePeople) */
 
 </script> 
         </div>

@@ -101,7 +101,7 @@
     <li>請跟隨課程完成此章節。</li>
   </ol>
 </div>
-
+<div id="app"></div>
 
 <script>
 // #1 樣板字串
@@ -121,14 +121,33 @@ const people = [
   }
 ]
 let originString = '我叫做 ' + people[0].name;
+
 let originUl = '<ul>\
   <li>我叫做 ' + people[0].name + '</li>\
   <li>我叫做 ' + people[1].name + '</li>\
   <li>我叫做 ' + people[2].name + '</li>\
 </ul>';
+console.log("1", originString, originUl);
 
-console.log(originString, originUl);
+let newOriginString = `我叫做 ${people[0].name}`;
 
+let newOriginUl = `
+<ul>
+  <li>我叫做 ${people[0].name}</li>
+  <li>我叫做 ${people[1].name}</li>
+  <li>我叫做 ${people[2].name}</li>
+</ul>
+`;
+console.log("2", newOriginString, newOriginUl);
+
+let oooOriginUl = `
+<ul>
+  ${people.map(person => `<li>我叫做 ${person.name}</li>`).join('')}  
+</ul>
+`;
+
+console.log("3", oooOriginUl);
+$("#app").html(oooOriginUl);
 </script> 
         </div>
       </div>

@@ -107,47 +107,62 @@
 // #1 陣列解構
 // 1. 請將 family 的值，一一賦予到變數上
 // 2. 請將後面三個名字賦予到另一個陣列上
-// let family = ['小明', '杰倫', '阿姨', '老媽', '老爸'];
+/* let family = ['小明', '杰倫', '阿姨', '老媽', '老爸'];
 // let ming = family[0];
 // let jay = family[1];
 // let auntie = family[2];
 
+let [ming, jay, , mom, father] = family;
+console.log(ming, jay, mom, father) */
+
 // #2 請交換以下兩個變數
-// let Goku = '悟空';
-// let Ginyu = '基紐';
+/* let Goku = '悟空';
+let Ginyu = '基紐';
+[Goku, Ginyu] = [Ginyu, Goku];
+console.log( Goku, Ginyu) */
 
 // #3 請拆解以下字元到單一變數上
-// let str = '基紐特攻隊';
+/* let str = '基紐特攻隊';
+let [q, a, z, w, s] = str;
+console.log(q, a, z, w, s)
+let b = [...str]
+console.log(b) */
 
 // #4 物件解構
 // 請取出物件內的兩個值到單一變數上
-// let family = {
-//   ming: '小明',
-//   jay: '杰倫',
-// };
+/* let family = {
+  ming: '小明',
+  jay: '杰倫',
+};
+let {ming, jay} = family
+console.log(ming, jay) */
 
 // #5
 // 取出其中一個值，並附在新的變數名稱上
-// let GinyuTeam = {
-//   Ginyu: '基紐',
-//   Jeice: '吉斯',
-//   burter: '巴特',
-//   // ...
-// }
+/* let GinyuTeam = {
+  Ginyu: '基紐',
+  Jeice: '吉斯',
+  burter: '巴特',
+  // ...
+}
+let {Ginyu: Gy, Jeice: Jc, burter: Bt} = GinyuTeam;
+console.log(Gy, Jc, Bt) */
 
 
 // #6 延伸問題
-// let { ming: Goku, family: [, mom] } = { ming: '小明', family: ['阿姨', '老媽', '老爸'] }
-// console.log(Goku, mom); // 請問答案是什麼？
+/* let { ming: Goku, family: [, mom] } = { ming: '小明', family: ['阿姨', '老媽', '老爸'] }
+console.log(Goku, mom); // 請問答案是什麼？ */
 
 
 // #7 預設值
 // let [ming = '小明', jay = '杰倫'] = ['阿明'] 
+// console.log(ming, jay)
 // 第一個會被賦值，第二個會用預設
 // ming: "阿明"
 // jay: "杰倫"
-
-// let { family: ming = '小明' } = {}
+/* 
+let { family: ming = '小明' } = {}
+console.log(ming) */
 // ming: '小明'
 </script> 
         </div>
