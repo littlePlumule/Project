@@ -194,7 +194,6 @@
               location: [],
               stared: [],
               filter: '',
-              fuck: null,
             },
             // 請在此撰寫 JavaScript
             created() {
@@ -204,8 +203,6 @@
                 vm.data = response;
                 vm.location = [...new Set(vm.data.map(item => item.County))]
               });
-
-              // this.fuck = [...this.location]
             },
             /* methods: {
               getData() {
