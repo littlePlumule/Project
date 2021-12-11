@@ -97,12 +97,37 @@
 </div>
 
 <div id="app">
-  <input type="email" v-model="email" v-focus v-validator="{ className: 'form-control' }">
+  <input type="email" v-model="email" v-foucs v-validator="{className : 'form-control'}">
 </div>
 
 <script>
 // 官方文件 https://cn.vuejs.org/v2/guide/custom-directive.html
-Vue.directive('focus', {
+Vue.directive('foucs',{
+  inserted(el) {
+    el.focus()
+  }
+})
+Vue.directive('validator',{
+  update(el, binding, vnode){
+    let value = el.value;
+    let pattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    if (!pattern.test(value)) {
+      el.className = 'form-control is-invalid'
+    } else {
+      el.className = 'form-control is-valid'
+    }
+  },
+  bind(el, binding, vnode) {
+    console.log('bind', el, binding, vnode)
+    el.className = binding.value.className;
+
+    const vModel = vnode.data.directives.find(item => item.name === 'model').expression
+    let value = vnode.context[vModel]
+    console.log(vModel, value)
+    //v-model , v-model 值
+  }
+})
+/* Vue.directive('focus', {
   inserted: function(el) {
     el.focus()
   }
@@ -144,12 +169,12 @@ Vue.directive('validator', {
       el.className = 'form-control is-valid'
     }
   }
-});
+}); */
 
 var app = new Vue({
   el: '#app',
   data: {
-    email: 'aaa',
+    email: 'sadf@ffff.com',
   },
   mounted: function() {
     console.log('Vue init:', this)
