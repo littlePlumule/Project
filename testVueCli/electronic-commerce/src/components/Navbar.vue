@@ -7,8 +7,25 @@
     <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
     <div class="navbar-nav">
       <div class="nav-item text-nowrap">
-        <a class="nav-link px-3" href="#">Sign out</a>
+        <a class="nav-link px-3" href="#" @click.prevent="signout">登出</a>
       </div>
     </div>
   </header>
 </template>
+
+<script>
+export default {
+  name: 'Navbar',
+  methods: {
+    signout() {
+      const vm = this;
+      const url = `${process.env.VUE_APP_APIPATH}/logout`;
+      this.$http.post(url).then((response) => {
+        if (response.data.success) {
+          vm.$router.push('/login');
+        }
+      });
+    },
+  },
+}
+</script>

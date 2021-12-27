@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Alert/>
     <main class="form-signin">
       <form @submit.prevent="signin">
         <h1 class="h3 mb-3 fw-normal">請先登入</h1>
@@ -26,8 +27,13 @@
 </template>
 
 <script>
+import Alert from '../AlertMessage';
+
 export default {
   name: 'HelloWorld',
+  components: {
+    Alert,
+  },
   data() {
     return {
       user: {
@@ -47,13 +53,15 @@ export default {
           const expired = response.data.expired;
           document.cookie = `hexToken=${token}; expires=${new Date(expired)};`;
           vm.$router.push('/admin/products');
+        } else {
+          this.$bus.$emit('message:push', response.data.message, 'danger');
         }
       })
     },
   },
   props: {
     msg: String
-  }
+  },
 }
 </script>
 

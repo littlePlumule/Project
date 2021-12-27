@@ -4,6 +4,9 @@ import VueRouter from 'vue-router';
 import Dashboard from '../components/Dashboard.vue';
 import Login from '../components/pages/Login.vue';
 import Products from '../components/pages/Products.vue';
+import Orders from '../components/pages/Order.vue';
+import Coupons from '../components/pages/Coupon.vue';
+import CustomerOrder from '../components/pages/CustomerOrders.vue';
 
 
 Vue.use(VueRouter)
@@ -34,6 +37,30 @@ const routes = [
         name: 'Products',
         component: Products,
         meta: { requiresAuth: true },
+      },
+      {
+        path: 'orders',
+        name: 'Orders',
+        component: Orders,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'coupons',
+        name: 'Coupons',
+        component: Coupons,
+        meta: { requiresAuth: true },
+      },
+    ],
+  },
+  {
+    path: '/',
+    name: 'Dashboard',
+    component: Dashboard,
+    children: [
+      {
+        path: 'customer_order',
+        name: 'CustomerOrder',
+        component: CustomerOrder,
       },
     ],
   },
