@@ -4,6 +4,7 @@
     <div class="text-right mt-4">
       <button class="btn btn-primary" @click="openModal(true)">建立新產品</button>
     </div>
+    <!-- table -->
     <table class="table mt-4">
       <thead>
         <tr>
@@ -186,7 +187,7 @@
         </div>
       </div>
     </div>
-    
+    <!-- delModal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content border-0">
@@ -254,7 +255,7 @@ export default {
       $('#productsModal').modal('show');
     },
     openDelModal(item) {
-      this.tempProducts = Object.assign({}, item);
+      this.tempProducts = item;
       $('#deleteModal').modal('show');
     },
     updateProduct() {
