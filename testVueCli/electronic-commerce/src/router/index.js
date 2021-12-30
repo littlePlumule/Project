@@ -1,13 +1,13 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 // import Home from '../views/Home.vue';
-import Dashboard from '../components/Dashboard.vue';
-import Login from '../components/pages/Login.vue';
-import Products from '../components/pages/Products.vue';
+/* import Dashboard from '../components/Dashboard.vue';
+import Login from '../components/pages/Login.vue'; */
+/* import Products from '../components/pages/Products.vue';
 import Orders from '../components/pages/Order.vue';
 import Coupons from '../components/pages/Coupon.vue';
 import CustomerOrder from '../components/pages/CustomerOrders.vue';
-import CustomerCheckout from '../components/pages/CustomerCheckout.vue';
+import CustomerCheckout from '../components/pages/CustomerCheckout.vue'; */
 
 
 Vue.use(VueRouter)
@@ -26,31 +26,37 @@ const routes = [
   //   meta: { requiresAuth: true },
   // },
   {
+    path: '/',
+    redirect: {
+      name:'Login',
+    },
+  },
+  {
     path: '/login',
     name: 'Login',
-    component: Login,
+    component: () => import('../views/Login.vue'),
   },
   {
     path: '/admin',
     name: 'Dashboard',
-    component: Dashboard,
+    component: () => import('../components/Dashboard.vue'),
     children: [
       {
         path: 'products',
         name: 'Products',
-        component: Products,
+        component: () => import('../views/Products.vue'),
         meta: { requiresAuth: true },
       },
       {
         path: 'orders',
         name: 'Orders',
-        component: Orders,
+        component: () => import('../views/Order.vue'),
         meta: { requiresAuth: true },
       },
       {
         path: 'coupons',
         name: 'Coupons',
-        component: Coupons,
+        component: () => import('../views/Coupon.vue'),
         meta: { requiresAuth: true },
       },
     ],
@@ -60,17 +66,17 @@ const routes = [
     redirect: {
       name: 'Dashboard',
     },
-    component: Dashboard,
+    component: () => import('../components/Dashboard.vue'),
     children: [
       {
         path: 'customer_order',
         name: 'CustomerOrder',
-        component: CustomerOrder,
+        component: () => import('../views/CustomerOrders.vue'),
       },
       {
         path: 'customer_checkout/:orderId',
         name: 'CustomerCheckout',
-        component: CustomerCheckout,
+        component: () => import('../views/CustomerCheckout.vue'),
       },
     ],
   },

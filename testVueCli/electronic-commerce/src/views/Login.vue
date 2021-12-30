@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Alert/>
+    <AlertMessage/>
     <main class="form-signin">
       <form @submit.prevent="signin">
         <h1 class="h3 mb-3 fw-normal">請先登入</h1>
@@ -27,12 +27,12 @@
 </template>
 
 <script>
-import Alert from '../AlertMessage';
+import AlertMessage from '../components/AlertMessage';
 
 export default {
   name: 'HelloWorld',
   components: {
-    Alert,
+    AlertMessage,
   },
   data() {
     return {

@@ -139,7 +139,7 @@
 
 <script>
 import $ from 'jquery';
-import pagination from '../pagination';
+import pagination from '../components/pagination';
 
 export default {
   components: {
