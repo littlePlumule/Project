@@ -117,7 +117,49 @@
         </div>
       </div>
     </div>
-    
+    <!-- list -->
+    <div class="my-5 row justify-content-center">
+      <form class="col-md-6" @submit.prevent="createOrder">
+        <div class="form-group">
+          <label for="useremail">Email</label>
+          <input type="email" class="form-control" name="email" id="useremail" :class="{'is-invalid': errors.has('email')}"
+            v-model="form.user.email" v-validate="'required|email'" placeholder="請輸入 Email">
+          <span class="text-danger" v-if="errors.has('email')">
+            {{ errors.first('email') }}
+          </span>
+        </div>
+      
+        <div class="form-group">
+          <label for="username">收件人姓名</label>
+          <input type="text" class="form-control" name="name" id="username" :class="{'is-invalid': errors.has('name')}"
+            v-model="form.user.name" v-validate="'required'" placeholder="輸入姓名">
+          <span class="text-danger" v-if="errors.has('name')">姓名欄位不得留空</span>
+        </div>
+      
+        <div class="form-group">
+          <label for="usertel">收件人電話</label>
+          <input type="tel" class="form-control" name="tel" id="usertel" :class="{'is-invalid': errors.has('tel')}"
+           v-validate="'required'" v-model="form.user.tel" placeholder="請輸入電話">
+          <span class="text-danger" v-if="errors.has('tel')">電話欄位不得留空</span>
+        </div>
+      
+        <div class="form-group">
+          <label for="useraddress">收件人地址</label>
+          <input type="text" class="form-control"  name="address" id="useraddress" :class="{'is-invalid': errors.has('address')}"
+           v-validate="'required'" v-model="form.user.address"
+            placeholder="請輸入地址">
+          <span class="text-danger" v-if="errors.has('address')">地址欄位不得留空</span>
+        </div>
+      
+        <div class="form-group">
+          <label for="comment">留言</label>
+          <textarea name="" id="comment" class="form-control" cols="30" rows="10" v-model="form.message"></textarea>
+        </div>
+        <div class="text-right">
+          <button class="btn btn-danger">送出訂單</button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -137,6 +179,15 @@ export default {
       cart: {
         carts:[],
       },
+      form: {
+        user: {
+          name: '',
+          email: '',
+          tel: '',
+          address: '',
+        },
+        message: '',
+      },
       coupon_code: '',
       isLoading: false,
     };
@@ -147,7 +198,6 @@ export default {
       const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products?page=${page}`;
       vm.isLoading = true;
       this.$http.get(url).then((response) => {
-        console.log(response.data);
         vm.products = response.data.products;
         vm.pagination = response.data.pagination;
         vm.isLoading = false;
@@ -171,8 +221,7 @@ export default {
         product_id: id,
         qty,
       }
-      this.$http.post(url, {data: cart}).then((response) => {
-        console.log(response.data);
+      this.$http.post(url, {data: cart}).then(() => {
         vm.status.loadingItem = '';
         vm.getCart();
         $('#productModal').modal('hide');
@@ -183,7 +232,6 @@ export default {
       const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
       vm.isLoading = true;
       this.$http.get(url).then((response) => {
-        console.log(response.data)
         vm.cart = response.data.data;
         vm.isLoading = false;
       });
@@ -204,11 +252,32 @@ export default {
         code: vm.coupon_code,
       };
       vm.isLoading = true;
-      this.$http.post(url, {data: coupon}).then((response) => {
-        console.log(response)
+      this.$http.post(url, {data: coupon}).then(() => {
         vm.getCart();
       });
       vm.isLoading = false;
+    },
+    createOrder() {
+      const vm = this;
+      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/order`;
+      const order = vm.form;
+      this.$validator.validate().then(valid => {
+        if (valid) {
+          vm.isLoading = true;
+          this.$http.post(url, {data: order}).then((response) => {
+            // vm.getCart();
+            if (response.data.success) {
+              this.$bus.$emit('message:push', response.data.message, 'success');
+              vm.$router.push(`/customer_checkout/${response.data.orderId}`);
+            } else {
+              this.$bus.$emit('message:push', response.data.message, 'danger');
+            }
+            vm.isLoading = false;
+          });
+        } else {
+          this.$bus.$emit('message:push', '欄位不得為空', 'danger');
+        }
+      });
     },
   },
   created() {

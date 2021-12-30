@@ -7,6 +7,7 @@ import Products from '../components/pages/Products.vue';
 import Orders from '../components/pages/Order.vue';
 import Coupons from '../components/pages/Coupon.vue';
 import CustomerOrder from '../components/pages/CustomerOrders.vue';
+import CustomerCheckout from '../components/pages/CustomerCheckout.vue';
 
 
 Vue.use(VueRouter)
@@ -14,7 +15,9 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '*',
-    redirect: '/login',
+    redirect: {
+      name: 'Login',
+    },
   },
   // {
   //   path: '/',
@@ -54,13 +57,20 @@ const routes = [
   },
   {
     path: '/',
-    name: 'Dashboard',
+    redirect: {
+      name: 'Dashboard',
+    },
     component: Dashboard,
     children: [
       {
         path: 'customer_order',
         name: 'CustomerOrder',
         component: CustomerOrder,
+      },
+      {
+        path: 'customer_checkout/:orderId',
+        name: 'CustomerCheckout',
+        component: CustomerCheckout,
       },
     ],
   },
