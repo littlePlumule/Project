@@ -197,7 +197,7 @@ export default {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products?page=${page}`;
       vm.isLoading = true;
-      this.$http.get(url).then((response) => {
+      vm.$http.get(url).then((response) => {
         vm.products = response.data.products;
         vm.pagination = response.data.pagination;
         vm.isLoading = false;
@@ -207,7 +207,7 @@ export default {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/product/${id}`;
       vm.status.loadingItem = id;
-      this.$http.get(url).then((response) => {
+      vm.$http.get(url).then((response) => {
         vm.product = response.data.product;
         $('#productModal').modal('show');
         vm.status.loadingItem = '';
@@ -221,7 +221,7 @@ export default {
         product_id: id,
         qty,
       }
-      this.$http.post(url, {data: cart}).then(() => {
+      vm.$http.post(url, {data: cart}).then(() => {
         vm.status.loadingItem = '';
         vm.getCart();
         $('#productModal').modal('hide');
@@ -231,7 +231,7 @@ export default {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
       vm.isLoading = true;
-      this.$http.get(url).then((response) => {
+      vm.$http.get(url).then((response) => {
         vm.cart = response.data.data;
         vm.isLoading = false;
       });
@@ -240,7 +240,7 @@ export default {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${id}`;
       vm.isLoading = true;
-      this.$http.delete(url).then(() => {
+      vm.$http.delete(url).then(() => {
         vm.getCart();
       });
       vm.isLoading = false;
@@ -252,7 +252,7 @@ export default {
         code: vm.coupon_code,
       };
       vm.isLoading = true;
-      this.$http.post(url, {data: coupon}).then(() => {
+      vm.$http.post(url, {data: coupon}).then(() => {
         vm.getCart();
       });
       vm.isLoading = false;
@@ -261,21 +261,21 @@ export default {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/order`;
       const order = vm.form;
-      this.$validator.validate().then(valid => {
+      vm.$validator.validate().then(valid => {
         if (valid) {
           vm.isLoading = true;
-          this.$http.post(url, {data: order}).then((response) => {
+          vm.$http.post(url, {data: order}).then((response) => {
             // vm.getCart();
             if (response.data.success) {
-              this.$bus.$emit('message:push', response.data.message, 'success');
+              vm.$bus.$emit('message:push', response.data.message, 'success');
               vm.$router.push(`/customer_checkout/${response.data.orderId}`);
             } else {
-              this.$bus.$emit('message:push', response.data.message, 'danger');
+              vm.$bus.$emit('message:push', response.data.message, 'danger');
             }
             vm.isLoading = false;
           });
         } else {
-          this.$bus.$emit('message:push', '欄位不得為空', 'danger');
+          vm.$bus.$emit('message:push', '欄位不得為空', 'danger');
         }
       });
     },

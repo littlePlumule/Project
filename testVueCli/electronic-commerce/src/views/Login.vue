@@ -44,16 +44,16 @@ export default {
   },
   methods: {
     signin() {
-      const api = `${process.env.VUE_APP_APIPATH}/admin/signin`;
       const vm = this;
-      this.$http.post(api, vm.user).then((response) => {
+      const api = `${process.env.VUE_APP_APIPATH}/admin/signin`;
+      vm.$http.post(api, vm.user).then((response) => {
         if (response.data.success) {
           const token = response.data.token;
           const expired = response.data.expired;
           document.cookie = `hexToken=${token}; expires=${new Date(expired)};`;
           vm.$router.push('/admin/products');
         } else {
-          this.$bus.$emit('message:push', response.data.message, 'danger');
+          vm.$bus.$emit('message:push', response.data.message, 'danger');
         }
       })
     },

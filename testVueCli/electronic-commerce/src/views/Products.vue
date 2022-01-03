@@ -237,7 +237,7 @@ export default {
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products?page=${page}`;
       const vm = this;
       vm.isLoading = true;
-      this.$http.get(api).then((response) => {
+      vm.$http.get(api).then((response) => {
         vm.isLoading = false;
         vm.products = response.data.products;
         vm.pagination = response.data.pagination;
@@ -258,22 +258,22 @@ export default {
       $('#deleteModal').modal('show');
     },
     updateProduct() {
+      const vm = this;
       let api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product`;
       let httpMethod = 'post';
-      const vm = this;
       if (!vm.isNew) {
         api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${vm.tempProducts.id}`;
         httpMethod = 'put';
       }
-      this.$http[httpMethod](api, {data: vm.tempProducts}).then((response) => {
+      vm.$http[httpMethod](api, {data: vm.tempProducts}).then((response) => {
         if (response.data.success) {
           $('#productsModal').modal('hide');
           vm.getProducts();
-          this.$bus.$emit('message:push', response.data.message, 'success');
+          vm.$bus.$emit('message:push', response.data.message, 'success');
         } else {
           $('#productsModal').modal('hide');
           vm.getProducts();
-          this.$bus.$emit('message:push', response.data.message, 'danger');
+          vm.$bus.$emit('message:push', response.data.message, 'danger');
         }
         // vm.products = response.data.products;
       });
@@ -281,15 +281,15 @@ export default {
     deleteProducts() {
       const vm = this;
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${vm.tempProducts.id}`;
-      this.$http.delete(api).then((response) => {
+      vm.$http.delete(api).then((response) => {
         if (response.data.success){
           $('#deleteModal').modal('hide');
           vm.getProducts();
-          this.$bus.$emit('message:push', response.data.message, 'success');
+          vm.$bus.$emit('message:push', response.data.message, 'success');
         } else {
           $('#deleteModal').modal('hide');
           vm.getProducts();
-          this.$bus.$emit('message:push', response.data.message, 'danger');
+          vm.$bus.$emit('message:push', response.data.message, 'danger');
         }
       });
     },
@@ -300,7 +300,7 @@ export default {
       const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/upload`;
       formData.append("file-to-upload", uploadedFile);
       vm.status.fileUploading = true;
-      this.$http.post(url, formData, {
+      vm.$http.post(url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -308,9 +308,9 @@ export default {
         vm.status.fileUploading = false;
         if (response.data.success) {
           vm.$set(vm.tempProducts, 'imageUrl', response.data.imageUrl);
-          this.$bus.$emit('message:push', response.data.message, 'success');
+          vm.$bus.$emit('message:push', response.data.message, 'success');
         } else {
-          this.$bus.$emit('message:push', response.data.message, 'danger');
+          vm.$bus.$emit('message:push', response.data.message, 'danger');
         }
       });
     },

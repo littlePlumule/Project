@@ -166,7 +166,7 @@ export default {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupons?page=${page}`;
       vm.isLoading = true;
-      this.$http.get(url).then((response) => {
+      vm.$http.get(url).then((response) => {
         vm.coupons = response.data.coupons;
         vm.pagination = response.data.pagination;
         vm.isLoading = false;
@@ -194,30 +194,30 @@ export default {
         url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${vm.tempCoupons.id}`;
         httpMethod = 'put';
       }
-      this.$http[httpMethod](url, {data: vm.tempCoupons}).then((response) => {
+      vm.$http[httpMethod](url, {data: vm.tempCoupons}).then((response) => {
         if (response.data.success) {
           $('#couponsModal').modal('hide');
-          this.getCoupons();
-          this.$bus.$emit('message:push', response.data.message, 'success');
+          vm.getCoupons();
+          vm.$bus.$emit('message:push', response.data.message, 'success');
         } else {
           $('#couponsModal').modal('hide');
-          this.getCoupons();
-          this.$bus.$emit('message:push', response.data.message, 'success');
+          vm.getCoupons();
+          vm.$bus.$emit('message:push', response.data.message, 'success');
         }
       });
     },
     deleteCoupon() {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${vm.tempCoupons.id}`;
-      this.$http.delete(url).then((response) => {
+      vm.$http.delete(url).then((response) => {
         if (response.data.success){
           $('#deleteModal').modal('hide');
           vm.getCoupons();
-          this.$bus.$emit('message:push', response.data.message, 'success');
+          vm.$bus.$emit('message:push', response.data.message, 'success');
         } else {
           $('#deleteModal').modal('hide');
           vm.getCoupons();
-          this.$bus.$emit('message:push', response.data.message, 'danger');
+          vm.$bus.$emit('message:push', response.data.message, 'danger');
         }
       })
     },

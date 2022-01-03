@@ -162,7 +162,7 @@ export default {
       const vm = this;
       const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/orders?page=${page}`;
       vm.isLoading = true;
-      this.$http.get(url).then((response) => {
+      vm.$http.get(url).then((response) => {
         vm.orders = response.data.orders;
         vm.pagination = response.data.pagination;
         vm.isLoading = false;
@@ -180,11 +180,11 @@ export default {
         if (response.data.success) {
           $('#orderModal').modal('hide');
           vm.getOrders();
-          this.$bus.$emit('message:push', response.data.message, 'success');
+          vm.$bus.$emit('message:push', response.data.message, 'success');
         } else {
           $('#orderModal').modal('hide');
           vm.getOrders();
-          this.$bus.$emit('message:push', response.data.message, 'danger');
+          vm.$bus.$emit('message:push', response.data.message, 'danger');
         }
         // vm.products = response.data.products; 
       });
