@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navbar/>
-    <Alert/>
+    <AlertMessage/>
     <div class="container-fluid">
       <div class="row">
         <Sidebar></Sidebar>
@@ -16,13 +16,13 @@
 <script>
 import Navbar from './Navbar.vue';
 import Sidebar from './Sidebar.vue';
-import Alert from './AlertMessage';
+import AlertMessage from './AlertMessage';
 
 export default {
   components: {
     Navbar,
     Sidebar,
-    Alert,
+    AlertMessage,
   },
   created() {
     const myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
