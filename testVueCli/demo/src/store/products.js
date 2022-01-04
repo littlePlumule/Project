@@ -28,7 +28,6 @@ export default{
       axios.get(url).then((response) => {
         context.commit('PRODUCTS', response.data.products);
         context.commit('CATEGORIES', response.data.products);
-        console.log('取得產品列表:', response);
         context.commit('LOADING', false, { root: true });
       });
     },
