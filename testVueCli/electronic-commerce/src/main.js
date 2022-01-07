@@ -10,6 +10,7 @@ import VueI18n from 'vue-i18n';
 
 import App from './App.vue';
 import router from './router';
+import store from './store';
 import './bus';
 import currencyFilter from './filters/currency';
 import date from './filters/date';
@@ -56,6 +57,7 @@ router.beforeEach((to, from, next) => {
 new Vue({
   i18n,
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')
 

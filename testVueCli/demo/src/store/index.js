@@ -3,29 +3,23 @@ import Vuex from 'vuex';
 
 import productsModules from './products';
 import cartModules from './cart';
+import loadingModules from './loading';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   strict: true,
   state: {
-    isLoading: false,
   },
   mutations: {
-    LOADING(state, status) {
-      state.isLoading = status;
-    },
   },
   actions: {
-    updateLoading(context, status) {
-      context.commit('LOADING', status);
-    },
   },
   modules: {
     productsModules,
     cartModules,
+    loadingModules,
   },
   getters: {
-    isLoading: state => state.isLoading,
   }
 })
