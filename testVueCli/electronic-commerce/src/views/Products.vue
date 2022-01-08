@@ -1,6 +1,5 @@
 <template>
   <div>
-    <loading :active.sync="isLoading"></loading>
     <div class="text-right mt-4">
       <button class="btn btn-primary" @click="openModal(true)">建立新產品</button>
     </div>
@@ -74,7 +73,7 @@
                 <div class="form-group">
                   <label for="customFile">
                     或 上傳圖片
-                    <i class="fas fa-spinner fa-spin" v-if="status.fileUploading"></i>
+                    <i class="fas fa-spinner fa-spin" v-if="fileUploading"></i>
                   </label>
                   <input type="file" id="customFile" class="form-control" ref="files" @change="uploadFile"/>
                 </div>
@@ -215,7 +214,7 @@
 <script>
 import $ from 'jquery';
 import pagination from '../components/pagination';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   components: {
@@ -223,91 +222,25 @@ export default {
   },
   data() {
     return {
-      tempProducts: {},
-      isNew: false,
-      isLoading: false,
-      status: {
-        fileUploading: false,
-      },
     };
   },
   computed: {
-    ...mapGetters(['products', 'pagination']),
+    ...mapGetters(['products', 'pagination', 'tempProducts', 'isNew', 'fileUploading']),
   },
   methods: {
     getProducts(page = 1) {
-      this.$store.dispatch('getProducts', page)
+      this.$store.dispatch('getProducts', page);
     },
     openModal(isNew, item) {
-      if (isNew) {
-        this.tempProducts = {};
-        this.isNew = true;
-      } else {
-        this.tempProducts = Object.assign({}, item);
-        this.isNew = false;
-      }
-      $('#productsModal').modal('show');
+      this.$store.dispatch('openModal', {isNew, item});
     },
     openDelModal(item) {
-      this.tempProducts = item;
-      $('#deleteModal').modal('show');
+      this.$store.dispatch('openDelModal', item);
     },
-    updateProduct() {
-      const vm = this;
-      let api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product`;
-      let httpMethod = 'post';
-      if (!vm.isNew) {
-        api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${vm.tempProducts.id}`;
-        httpMethod = 'put';
-      }
-      vm.$http[httpMethod](api, {data: vm.tempProducts}).then((response) => {
-        if (response.data.success) {
-          $('#productsModal').modal('hide');
-          vm.getProducts();
-          vm.$bus.$emit('message:push', response.data.message, 'success');
-        } else {
-          $('#productsModal').modal('hide');
-          vm.getProducts();
-          vm.$bus.$emit('message:push', response.data.message, 'danger');
-        }
-        // vm.products = response.data.products;
-      });
-    },
-    deleteProducts() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${vm.tempProducts.id}`;
-      vm.$http.delete(api).then((response) => {
-        if (response.data.success){
-          $('#deleteModal').modal('hide');
-          vm.getProducts();
-          vm.$bus.$emit('message:push', response.data.message, 'success');
-        } else {
-          $('#deleteModal').modal('hide');
-          vm.getProducts();
-          vm.$bus.$emit('message:push', response.data.message, 'danger');
-        }
-      });
-    },
+    ...mapActions(['updateProduct', 'deleteProducts']),
     uploadFile() {
       const uploadedFile = this.$refs.files.files[0];
-      const vm = this;
-      const formData = new FormData();
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/upload`;
-      formData.append("file-to-upload", uploadedFile);
-      vm.status.fileUploading = true;
-      vm.$http.post(url, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }).then((response) => {
-        vm.status.fileUploading = false;
-        if (response.data.success) {
-          vm.$set(vm.tempProducts, 'imageUrl', response.data.imageUrl);
-          vm.$bus.$emit('message:push', response.data.message, 'success');
-        } else {
-          vm.$bus.$emit('message:push', response.data.message, 'danger');
-        }
-      });
+      this.$store.dispatch('uploadFile', uploadedFile);
     },
   },
   created() {

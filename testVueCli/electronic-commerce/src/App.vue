@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <AlertMessage></AlertMessage>
-    <!-- loading -->
-    <loading :active.sync="isLoading"></loading>
+    <AlertMessage/>
     <div id="nav">
     </div>
+     <!-- loading -->
+    <loading :active.sync="isLoading"></loading>
     <router-view/>
   </div>
 </template>
@@ -19,7 +19,7 @@ export default {
     AlertMessage,
   },
   computed: {
-    ...mapGetters(['isLoading'])
+    ...mapGetters(['isLoading']),
   }
 };
 </script>

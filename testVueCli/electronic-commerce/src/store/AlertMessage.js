@@ -2,18 +2,6 @@ export default({
   state: {
     messages: [],
   },
-  actions: {
-    updateMessage({ commit }, { message, status }) {
-      const timestamp = Math.floor(new Date() / 1000);
-      commit('UPDATEMESSAGES', { message, status, timestamp });
-      setTimeout(() => {
-        commit('TIMEREMOVE', timestamp);
-      }, 1500);
-    },
-    removeMessage({ commit }, num) {
-      commit('REMOVEMESSAGE', num);
-    },
-  },
   mutations: {
     UPDATEMESSAGES(state, { message, status, timestamp }) {
       state.messages.push({
@@ -32,6 +20,18 @@ export default({
         }
       });
     }
+  },
+  actions: {
+    updateMessage({ commit }, { message, status }) {
+      const timestamp = Math.floor(new Date() / 1000);
+      commit('UPDATEMESSAGES', { message, status, timestamp });
+      setTimeout(() => {
+        commit('TIMEREMOVE', timestamp);
+      }, 1500);
+    },
+    removeMessage({ commit }, num) {
+      commit('REMOVEMESSAGE', num);
+    },
   },
   getters: {
     messages: state => state.messages,

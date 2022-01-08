@@ -11,10 +11,10 @@ export default new Vuex.Store({
   state: {
 
   },
-  actions: {
+  mutations: {
 
   },
-  mutations: {
+  actions: {
 
   },
   getters: {
