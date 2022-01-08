@@ -215,6 +215,7 @@
 <script>
 import $ from 'jquery';
 import pagination from '../components/pagination';
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -222,8 +223,6 @@ export default {
   },
   data() {
     return {
-      products: [],
-      pagination: {},
       tempProducts: {},
       isNew: false,
       isLoading: false,
@@ -232,16 +231,12 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapGetters(['products', 'pagination']),
+  },
   methods: {
     getProducts(page = 1) {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products?page=${page}`;
-      const vm = this;
-      vm.isLoading = true;
-      vm.$http.get(api).then((response) => {
-        vm.isLoading = false;
-        vm.products = response.data.products;
-        vm.pagination = response.data.pagination;
-      });
+      this.$store.dispatch('getProducts', page)
     },
     openModal(isNew, item) {
       if (isNew) {

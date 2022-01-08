@@ -12,39 +12,27 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
-  name: 'Navbar',
+  name: 'Alert',
   data() {
     return {
-      messages: [],
     };
+  },
+  computed: {
+    ...mapGetters(['messages']),
   },
   methods: {
     updateMessage(message, status) {
-      const timestamp = Math.floor(new Date() / 1000);
-      this.messages.push({
-        message,
-        status,
-        timestamp,
-      });
-      this.removeMessageWithTiming(timestamp);
+      this.$store.dispatch('updateMessage', {message, status});
     },
     removeMessage(num) {
-      this.messages.splice(num, 1);
-    },
-    removeMessageWithTiming(timestamp) {
-      const vm = this;
-      setTimeout(() => {
-        vm.messages.forEach((item, i) => {
-          if (item.timestamp === timestamp) {
-            vm.messages.splice(i, 1);
-          }
-        });
-      }, 5000);
+      this.$store.dispatch('removeMessage', num);
     },
   },
   created() {
-    const vm = this;
+    /* const vm = this;
 
     // 自定義名稱 'messsage:push'
     // message: 傳入參數
@@ -52,7 +40,7 @@ export default {
     vm.$bus.$on('message:push', (message, status = 'warning') => {
       vm.updateMessage(message, status);
     });
-    // vm.$bus.$emit('message:push');
+    // vm.$bus.$emit('message:push'); */
   },
 };
 </script>

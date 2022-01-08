@@ -1,6 +1,5 @@
 <template>
   <div>
-    <AlertMessage/>
     <main class="form-signin">
       <form @submit.prevent="signin">
         <h1 class="h3 mb-3 fw-normal">請先登入</h1>
@@ -27,13 +26,9 @@
 </template>
 
 <script>
-import AlertMessage from '../components/AlertMessage';
 
 export default {
   name: 'HelloWorld',
-  components: {
-    AlertMessage,
-  },
   data() {
     return {
       user: {
@@ -44,18 +39,8 @@ export default {
   },
   methods: {
     signin() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/admin/signin`;
-      vm.$http.post(api, vm.user).then((response) => {
-        if (response.data.success) {
-          const token = response.data.token;
-          const expired = response.data.expired;
-          document.cookie = `hexToken=${token}; expires=${new Date(expired)};`;
-          vm.$router.push('/admin/products');
-        } else {
-          vm.$bus.$emit('message:push', response.data.message, 'danger');
-        }
-      })
+      let vm = this
+      this.$store.dispatch('signin', vm.user);
     },
   },
   props: {

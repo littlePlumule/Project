@@ -1,5 +1,8 @@
 <template>
   <div id="app">
+    <AlertMessage></AlertMessage>
+    <!-- loading -->
+    <loading :active.sync="isLoading"></loading>
     <div id="nav">
     </div>
     <router-view/>
@@ -7,8 +10,17 @@
 </template>
 
 <script>
+import AlertMessage from './components/AlertMessage';
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'App',
+  components: {
+    AlertMessage,
+  },
+  computed: {
+    ...mapGetters(['isLoading'])
+  }
 };
 </script>
 

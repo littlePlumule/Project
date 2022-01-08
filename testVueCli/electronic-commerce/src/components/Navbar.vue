@@ -14,18 +14,11 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
   name: 'Navbar',
   methods: {
-    signout() {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/logout`;
-      vm.$http.post(url).then((response) => {
-        if (response.data.success) {
-          vm.$router.push('/login');
-        }
-      });
-    },
+    ...mapActions(['signout']),
   },
 }
 </script>
