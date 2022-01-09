@@ -1,9 +1,7 @@
 <template>
   <div>
-    <!-- loading -->
-    <loading :active.sync="isLoading"></loading>
     <div class="text-right mt-4">
-      <button class="btn btn-primary" @click="openModal(true)">建立新的優惠券</button>
+      <button class="btn btn-primary" @click="openCouponModal(true)">建立新的優惠券</button>
     </div>
     <!-- table -->
     <table class="table mt-4">
@@ -26,8 +24,8 @@
             <span v-else>未啟為</span>
           </td>
           <td>
-            <button class="btn btn-outline-primary btn-sm" @click="openModal(false, item)">編輯</button>
-            <button class="btn btn-outline-danger btn-sm" @click="openDelModal(item)">刪除</button>
+            <button class="btn btn-outline-primary btn-sm" @click="openCouponModal(false, item)">編輯</button>
+            <button class="btn btn-outline-danger btn-sm" @click="openDelCouponModal(item)">刪除</button>
           </td>
         </tr>
       </tbody>
@@ -147,6 +145,7 @@
 <script>
 import $ from 'jquery';
 import pagination from '../components/pagination';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   components: {
@@ -154,73 +153,22 @@ export default {
   },
   data() {
     return{
-      coupons: [],
-      pagination: {},
-      tempCoupons: {},
-      isNew: false,
-      isLoading: false,
     };
+  },
+  computed: {
+    ...mapGetters(['coupons', 'pagination', 'tempCoupons', 'isNew']),
   },
   methods: {
     getCoupons(page = 1) {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupons?page=${page}`;
-      vm.isLoading = true;
-      vm.$http.get(url).then((response) => {
-        vm.coupons = response.data.coupons;
-        vm.pagination = response.data.pagination;
-        vm.isLoading = false;
-      })
+      this.$store.dispatch('getCoupons', page);
     },
-    openModal(isNew, item) {
-      if (isNew) {
-        this.tempCoupons = {};
-        this.isNew = true;
-      } else {
-        this.tempCoupons = Object.assign({}, item);
-        this.isNew = false;
-      }
-      $('#couponsModal').modal('show');
+    openCouponModal(isNew, item) {
+      this.$store.dispatch('openCouponModal', {isNew, item});
     },
-    openDelModal(item) {
-      this.tempCoupons = item;
-      $('#deleteModal').modal('show');
+    openDelCouponModal(item) {
+      this.$store.dispatch('openDelCouponModal', item);
     },
-    updateCoupon() {
-      const vm = this;
-      let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon`;
-      let httpMethod = 'post';
-      if (!vm.isNew) {
-        url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${vm.tempCoupons.id}`;
-        httpMethod = 'put';
-      }
-      vm.$http[httpMethod](url, {data: vm.tempCoupons}).then((response) => {
-        if (response.data.success) {
-          $('#couponsModal').modal('hide');
-          vm.getCoupons();
-          vm.$bus.$emit('message:push', response.data.message, 'success');
-        } else {
-          $('#couponsModal').modal('hide');
-          vm.getCoupons();
-          vm.$bus.$emit('message:push', response.data.message, 'success');
-        }
-      });
-    },
-    deleteCoupon() {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${vm.tempCoupons.id}`;
-      vm.$http.delete(url).then((response) => {
-        if (response.data.success){
-          $('#deleteModal').modal('hide');
-          vm.getCoupons();
-          vm.$bus.$emit('message:push', response.data.message, 'success');
-        } else {
-          $('#deleteModal').modal('hide');
-          vm.getCoupons();
-          vm.$bus.$emit('message:push', response.data.message, 'danger');
-        }
-      })
-    },
+    ...mapActions(['updateCoupon', 'deleteCoupon']),
   },
   created() {
     this.getCoupons();

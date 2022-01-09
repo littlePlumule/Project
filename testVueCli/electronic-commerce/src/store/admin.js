@@ -28,6 +28,32 @@ export default({
             return `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${item}`;
           case 'img':
             return `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/upload`;
+          default:
+            return `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}//products/all`;
+        }
+      },
+      orders(name, item) {
+        switch (name) {
+          case 'page':
+            return `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/orders?page=${item}`;
+          case 'put':
+            return `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/order/${item}`;
+          default:
+            return `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/order`;
+        }
+      },
+      coupons(name, item) {
+        switch (name) {
+          case 'page':
+            return `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupons?page=${item}`;
+          case 'post':
+            return `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon`;
+          case 'put':
+            return `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${item}`;
+          case 'delete':
+            return `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${item}`;
+          default:
+            return `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon`;
         }
       }
     },
@@ -36,6 +62,9 @@ export default({
     tempProducts: {},
     isNew: false,
     fileUploading: false,
+    orders: [],
+    coupons: [],
+    tempCoupons: {},
   },
   mutations: {
     PRODUCTS(state, payload) {
@@ -49,7 +78,16 @@ export default({
     },
     TEMPPRODUCTS(state, payload) {
       state.tempProducts = payload;
-    }
+    },
+    ORDERS(state, payload) {
+      state.orders = payload;
+    },
+    COUPONS(state, payload) {
+      state.coupons = payload;
+    },
+    TEMPCOUPONS(state, payload) {
+      state.tempCoupons = payload;
+    },
   },
   actions: {
     signin({ state, dispatch }, user) {
@@ -166,6 +204,103 @@ export default({
         }
       });
     },
+    getOrders({ state, commit }, page) {
+      const url = state.url.orders('page', page);
+      commit('LOADING', true);
+      axios.get(url).then((response) => {
+        commit('ORDERS', response.data.orders);
+        commit('PAGINATION', response.data.pagination);
+        commit('LOADING', false);
+      });
+    },
+    updateOrder({ state, dispatch }, {tempOrder, id}) {
+      const url = state.url.orders('put', id);
+      axios.put(url, {data: tempOrder}).then((response) => {
+        if (response.data.success) {
+          $('#orderModal').modal('hide');
+          dispatch('getOrders');
+          dispatch('updateMessage', {
+            message: response.data.message,
+            status: 'success',
+          });
+        } else {
+          $('#orderModal').modal('hide');
+          dispatch('getOrders');
+          dispatch('updateMessage', {
+            message: response.data.message,
+            status: 'danger',
+          });
+        }
+      });
+    },
+    getCoupons({ state, commit }, page) {
+      const url = state.url.coupons('page', page);
+      commit('LOADING', true);
+      axios.get(url).then((response) => {
+        commit('COUPONS', response.data.coupons);
+        commit('PAGINATION', response.data.pagination);
+        commit('LOADING', false);
+      })
+    },
+    openCouponModal({ commit }, { isNew, item }) {
+      if (isNew) {
+        commit('TEMPCOUPONS', {});
+        commit('ISNEW', true);
+      } else {
+        commit('TEMPCOUPONS', Object.assign({}, item));
+        commit('ISNEW', false);
+      }
+      $('#couponsModal').modal('show');
+    },
+    openDelCouponModal({ commit }, item) {
+      commit('TEMPCOUPONS', item);
+      $('#deleteModal').modal('show');
+    },
+    updateCoupon({ state, dispatch }) {
+      let url = state.url.coupons('post');
+      let httpMethod = 'post';
+      if (!state.isNew) {
+        url = state.url.coupons('put', state.tempCoupons.id);
+        httpMethod = 'put';
+      }
+      axios[httpMethod](url, {data: state.tempCoupons}).then((response) => {
+        if (response.data.success) {
+          $('#couponsModal').modal('hide');
+          dispatch('getCoupons');
+          dispatch('updateMessage', {
+            message: response.data.message,
+            status: 'success',
+          });
+        } else {
+          $('#couponsModal').modal('hide');
+          dispatch('getCoupons');
+          dispatch('updateMessage', {
+            message: response.data.message,
+            status: 'danger',
+          });
+        }
+      });
+    },
+    deleteCoupon({ state, dispatch}) {
+      const url = state.url.coupons('delete', state.tempCoupons.id);
+      axios.delete(url).then((response) => {
+        if (response.data.success){
+          $('#deleteModal').modal('hide');
+          dispatch('getCoupons');
+          dispatch('updateMessage', {
+            message: response.data.message,
+            status: 'success',
+          });
+        } else {
+          $('#deleteModal').modal('hide');
+          dispatch('getCoupons');
+          dispatch('updateMessage', {
+            message: response.data.message,
+            status: 'danger',
+          });
+        }
+      })
+    },
   },
   getters: {
     products: state => state.products,
@@ -173,5 +308,8 @@ export default({
     tempProducts: state => state.tempProducts,
     isNew: state => state.isNew,
     fileUploading: state => state.fileUploading,
+    orders: state => state.orders,
+    coupons: state => state.coupons,
+    tempCoupons: state => state.tempCoupons,
   },
 });

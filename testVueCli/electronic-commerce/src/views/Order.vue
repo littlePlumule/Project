@@ -1,7 +1,5 @@
 <template>
   <div>
-    <!-- loading -->
-    <loading :active.sync="isLoading"></loading>
     <!-- table -->
     <table class="table mt-4">
       <thead>
@@ -15,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in orders" :key="item.id">
+        <tr v-for="item in orders" :key="item.id" v-if="item.num > 1">
           <td>{{item.create_at|date}}</td>
           <td>{{item.user.email}}</td>
           <td>
@@ -140,6 +138,7 @@
 <script>
 import $ from 'jquery';
 import pagination from '../components/pagination';
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -147,26 +146,19 @@ export default {
   },
   data() {
     return{
-      orders: [],
-      pagination: {},
       tempOrder: {
         create_at: 0,
         user: {},
       },
       product: {},
-      isLoading: false,
     };
+  },
+  computed: {
+    ...mapGetters(['orders', 'pagination']),
   },
   methods: {
     getOrders(page = 1) {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/orders?page=${page}`;
-      vm.isLoading = true;
-      vm.$http.get(url).then((response) => {
-        vm.orders = response.data.orders;
-        vm.pagination = response.data.pagination;
-        vm.isLoading = false;
-      });
+      this.$store.dispatch('getOrders', page);
     },
     openOrderModal(item) {
       this.tempOrder = Object.assign({}, item);
@@ -174,20 +166,9 @@ export default {
       $('#orderModal').modal('show');
     },
     updateOrder() {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/order/${vm.tempOrder.id}`;
-      vm.$http.put(url, {data: vm.tempOrder}).then((response) => {
-        if (response.data.success) {
-          $('#orderModal').modal('hide');
-          vm.getOrders();
-          vm.$bus.$emit('message:push', response.data.message, 'success');
-        } else {
-          $('#orderModal').modal('hide');
-          vm.getOrders();
-          vm.$bus.$emit('message:push', response.data.message, 'danger');
-        }
-        // vm.products = response.data.products; 
-      });
+      let tempOrder = this.tempOrder;
+      let id = this.tempOrder.id;
+      this.$store.dispatch('updateOrder', {tempOrder, id})
     },
     filterDate(num) {
       let n = Number(num);

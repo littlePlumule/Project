@@ -6,6 +6,7 @@ Vue.use(Vuex);
 import AlertMessage from './AlertMessage';
 import loading from './loading';
 import admin from './admin';
+import client from './client';
 
 export default new Vuex.Store({
   state: {
@@ -24,5 +25,6 @@ export default new Vuex.Store({
     loading,
     AlertMessage,
     admin,
+    client
   },
 });

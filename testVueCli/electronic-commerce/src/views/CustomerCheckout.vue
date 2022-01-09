@@ -75,6 +75,7 @@ export default {
   methods: {
     getOrder() {
       const vm = this;
+      let orderId = this.orderId;
       const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/order/${vm.orderId}`;
       vm.isLoading = true;
       vm.$http.get(url).then((response) => {

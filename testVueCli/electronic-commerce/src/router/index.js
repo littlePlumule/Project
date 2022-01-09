@@ -19,12 +19,6 @@ const routes = [
       name: 'Login',
     },
   },
-  // {
-  //   path: '/',
-  //   name: 'Home',
-  //   component: Home,
-  //   meta: { requiresAuth: true },
-  // },
   {
     path: '/',
     redirect: {
