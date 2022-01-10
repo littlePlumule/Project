@@ -14,7 +14,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { createNamespacedHelpers } from 'vuex';
+const { mapActions } = createNamespacedHelpers('admin');
+
 export default {
   name: 'Navbar',
   methods: {

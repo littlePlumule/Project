@@ -138,7 +138,6 @@
 <script>
 import $ from 'jquery';
 import pagination from '../components/pagination';
-
 import { createNamespacedHelpers } from 'vuex';
 const { mapGetters } = createNamespacedHelpers('admin');
 
