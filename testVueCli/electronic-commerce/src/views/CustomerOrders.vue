@@ -1,7 +1,5 @@
 <template>
   <div>
-    <!-- loading -->
-    <loading :active.sync="isLoading"></loading>
     <!-- main -->
     <div class="row mt-4">
       <div class="col-md-4 mb-4" v-for="item in products" :key="item.id">
@@ -22,17 +20,19 @@
           </div>
           <div class="card-footer d-flex">
             <button type="button" class="btn btn-outline-secondary btn-sm" @click="getProduct(item.id)">
-              <i class="fas fa-spinner fa-spin" v-if="status.loadingItem === item.id"></i>
+              <i class="fas fa-spinner fa-spin" v-if="loadingItem === item.id"></i>
               查看更多
             </button>
             <button type="button" class="btn btn-outline-danger btn-sm ml-auto" @click="addToCart(item.id)">
-              <i class="fas fa-spinner fa-spin" v-if="status.loadingItem === item.id"></i>
+              <i class="fas fa-spinner fa-spin" v-if="loadingItem === item.id"></i>
               加到購物車
             </button>
           </div>
         </div>
       </div>
     </div>
+    <!-- pagination -->
+      <pagination :pagination="pagination" @emitgetProducts="getProducts"/>
     <!-- table -->
     <div class="container"  v-if="cart.carts.length > 0">
       <table class="table mx-auto" >
@@ -165,20 +165,13 @@
 
 <script>
 import $ from 'jquery';
+import pagination from '../components/pagination';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name:'Dashboard',
   data() {
     return {
-      products: [],
-      pagination: {},
-      product: {},
-      status: {
-        loadingItem: '',
-      },
-      cart: {
-        carts:[],
-      },
       form: {
         user: {
           name: '',
@@ -188,74 +181,36 @@ export default {
         },
         message: '',
       },
-      coupon_code: '',
-      isLoading: false,
     };
   },
+  components: {
+    pagination,
+  },
+  computed: {
+    coupon_code: {
+      get(){
+        return this.$store.state.coupon_code;
+      },
+
+      set(val){
+        this.$store.commit('COUPON_CODE', val)
+      }
+    },
+    ...mapGetters(['products', 'pagination', 'product', 'loadingItem', 'cart']),
+  },
   methods: {
+    ...mapActions(['getCart', 'addCouponCode']),
     getProducts(page = 1) {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products?page=${page}`;
-      vm.isLoading = true;
-      vm.$http.get(url).then((response) => {
-        vm.products = response.data.products;
-        vm.pagination = response.data.pagination;
-        vm.isLoading = false;
-      });
+      this.$store.dispatch('getProducts', page);
     },
     getProduct(id) {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/product/${id}`;
-      vm.status.loadingItem = id;
-      vm.$http.get(url).then((response) => {
-        vm.product = response.data.product;
-        $('#productModal').modal('show');
-        vm.status.loadingItem = '';
-      });
+      this.$store.dispatch('getProduct', id);
     },
     addToCart(id, qty = 1) {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
-      vm.status.loadingItem = id;
-      const cart = {
-        product_id: id,
-        qty,
-      }
-      vm.$http.post(url, {data: cart}).then(() => {
-        vm.status.loadingItem = '';
-        vm.getCart();
-        $('#productModal').modal('hide');
-      });
-    },
-    getCart() {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
-      vm.isLoading = true;
-      vm.$http.get(url).then((response) => {
-        vm.cart = response.data.data;
-        vm.isLoading = false;
-      });
+      this.$store.dispatch('addToCart', {id, qty});
     },
     removeCartItem(id) {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${id}`;
-      vm.isLoading = true;
-      vm.$http.delete(url).then(() => {
-        vm.getCart();
-      });
-      vm.isLoading = false;
-    },
-    addCouponCode() {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/coupon`;
-      const coupon = {
-        code: vm.coupon_code,
-      };
-      vm.isLoading = true;
-      vm.$http.post(url, {data: coupon}).then(() => {
-        vm.getCart();
-      });
-      vm.isLoading = false;
+      this.$store.dispatch('removeCartItem', id);
     },
     createOrder() {
       const vm = this;
@@ -263,19 +218,28 @@ export default {
       const order = vm.form;
       vm.$validator.validate().then(valid => {
         if (valid) {
-          vm.isLoading = true;
+          vm.$store.dispatch('updateLoading', true);
           vm.$http.post(url, {data: order}).then((response) => {
             // vm.getCart();
             if (response.data.success) {
-              vm.$bus.$emit('message:push', response.data.message, 'success');
+              vm.$store.dispatch('updateMessage', {
+                message: response.data.message,
+                status: 'success',
+              });
               vm.$router.push(`/customer_checkout/${response.data.orderId}`);
             } else {
-              vm.$bus.$emit('message:push', response.data.message, 'danger');
+              vm.$store.dispatch('updateMessage', {
+                message: response.data.message,
+                status: 'danger',
+              });
             }
-            vm.isLoading = false;
+            vm.$store.dispatch('updateLoading', false);
           });
         } else {
-          vm.$bus.$emit('message:push', '欄位不得為空', 'danger');
+          vm.$store.dispatch('updateMessage', {
+                message: '欄位不得為空',
+                status: 'danger',
+              });
         }
       });
     },

@@ -27,7 +27,7 @@ export default({
       commit('UPDATEMESSAGES', { message, status, timestamp });
       setTimeout(() => {
         commit('TIMEREMOVE', timestamp);
-      }, 1500);
+      }, 3000);
     },
     removeMessage({ commit }, num) {
       commit('REMOVEMESSAGE', num);
