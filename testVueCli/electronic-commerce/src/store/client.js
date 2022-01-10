@@ -30,6 +30,15 @@ export default({
         switch (name) {
           case 'post':
             return `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/coupon`;
+          
+        }
+      },
+      orders(name, item) {
+        switch (name) {
+          case 'id':
+            return `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/order/${item}`;
+          case 'pay':
+            return `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/pay/${item}`;
         }
       },
     },
@@ -41,6 +50,10 @@ export default({
       carts:[],
     },
     coupon_code: '',
+    order: {
+      products: [],
+      user: {},
+    },
   },
   mutations: {
     PRODUCTS(state, payload) {
@@ -60,7 +73,10 @@ export default({
     },
     COUPON_CODE(state, payload) {
       state.coupon_code = payload;
-    }
+    },
+    ORDER(state, payload) {
+      state.order = payload;
+    },
   },
   actions: {
     getProducts({ state, commit }, page) {
@@ -110,7 +126,26 @@ export default({
       });
       commit('LOADING', false);
     },
-    
+    getOrder({ state, commit }, id) {
+      const url = state.url.orders('id', id);
+      commit('LOADING', true);
+      axios.get(url).then((response) => {
+        console.log('getOrder', response)
+        commit('ORDER', response.data.order);
+        commit('LOADING', false);
+      });
+    },
+    payOrder({ state, commit, dispatch }, id) {
+      const url = state.url.orders('pay', id);
+      commit('LOADING', true);
+      axios.post(url).then((response) => {
+        console.log('payOrder', response)
+        if (response.data.success) {
+          dispatch('getOrder', id);
+        }
+      });
+      commit('LOADING', false);
+    },
   },
   getters: {
     products: state => state.products,
@@ -118,5 +153,6 @@ export default({
     product: state => state.product,
     loadingItem: state => state.loadingItem,
     cart: state => state.cart,
+    order: state => state.order,
   },
 })

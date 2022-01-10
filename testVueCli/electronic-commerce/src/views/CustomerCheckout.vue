@@ -60,39 +60,26 @@
 
 <script>
 import $ from 'jquery';
+import { mapGetters } from 'vuex';
 
 export default {
   data() {
     return {
       orderId: '',
-      order: {
-        products: [],
-        user: {},
-      },
       isLoading: false,
     };
   },
+  computed: {
+    ...mapGetters(['order']),
+  },
   methods: {
     getOrder() {
-      const vm = this;
-      let orderId = this.orderId;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/order/${vm.orderId}`;
-      vm.isLoading = true;
-      vm.$http.get(url).then((response) => {
-        vm.order = response.data.order;
-        vm.isLoading = false;
-      });
+      let id = this.orderId;
+      this.$store.dispatch('getOrder', id);
     },
     payOrder() {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/pay/${vm.orderId}`;
-      vm.isLoading = true;
-      vm.$http.post(url).then((response) => {
-        if (response.data.success) {
-          vm.getOrder();
-        }
-      });
-      vm.isLoading = false;
+      let id = this.orderId;
+      this.$store.dispatch('payOrder', id);
     },
   },
   created() {
