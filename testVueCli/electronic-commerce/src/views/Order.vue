@@ -138,7 +138,9 @@
 <script>
 import $ from 'jquery';
 import pagination from '../components/pagination';
-import { mapGetters } from 'vuex';
+
+import { createNamespacedHelpers } from 'vuex';
+const { mapGetters } = createNamespacedHelpers('admin');
 
 export default {
   components: {
@@ -158,7 +160,7 @@ export default {
   },
   methods: {
     getOrders(page = 1) {
-      this.$store.dispatch('getOrders', page);
+      this.$store.dispatch('admin/getOrders', page);
     },
     openOrderModal(item) {
       this.tempOrder = Object.assign({}, item);
@@ -168,7 +170,7 @@ export default {
     updateOrder() {
       let tempOrder = this.tempOrder;
       let id = this.tempOrder.id;
-      this.$store.dispatch('updateOrder', {tempOrder, id})
+      this.$store.dispatch('admin/updateOrder', {tempOrder, id})
     },
     filterDate(num) {
       let n = Number(num);

@@ -214,33 +214,30 @@
 <script>
 import $ from 'jquery';
 import pagination from '../components/pagination';
-import { mapGetters, mapActions } from 'vuex';
+import { createNamespacedHelpers } from 'vuex';
+const { mapGetters, mapActions } = createNamespacedHelpers('admin');
 
 export default {
   components: {
     pagination,
-  },
-  data() {
-    return {
-    };
   },
   computed: {
     ...mapGetters(['products', 'pagination', 'tempProducts', 'isNew', 'fileUploading']),
   },
   methods: {
     getProducts(page = 1) {
-      this.$store.dispatch('getProducts', page);
+      this.$store.dispatch('admin/getProducts', page);
     },
     openModal(isNew, item) {
-      this.$store.dispatch('openModal', {isNew, item});
+      this.$store.dispatch('admin/openModal', {isNew, item});
     },
     openDelModal(item) {
-      this.$store.dispatch('openDelModal', item);
+      this.$store.dispatch('admin/openDelModal', item);
     },
     ...mapActions(['updateProduct', 'deleteProducts']),
     uploadFile() {
       const uploadedFile = this.$refs.files.files[0];
-      this.$store.dispatch('uploadFile', uploadedFile);
+      this.$store.dispatch('admin/uploadFile', uploadedFile);
     },
   },
   created() {

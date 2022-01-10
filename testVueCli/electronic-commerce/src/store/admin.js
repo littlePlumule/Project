@@ -4,6 +4,7 @@ import $ from 'jquery';
 import vue from 'vue';
 
 export default({
+  namespaced: true,
   state: {
     url: {
       account(name) {
@@ -102,7 +103,7 @@ export default({
           dispatch('updateMessage', { 
             message: response.data.message, 
             status: 'danger', 
-          })
+          }, { root: true })
         }
       })
     },
@@ -116,9 +117,9 @@ export default({
     },
     getProducts({ commit, state }, page) {
       const api = state.url.products('page', page);
-      commit('LOADING', true);
+      commit('LOADING', true, { root: true });
       axios.get(api).then((response) => {
-        commit('LOADING', false);
+        commit('LOADING', false, { root: true });
         commit('PRODUCTS', response.data.products);
         commit('PAGINATION', response.data.pagination);
       });
@@ -151,14 +152,14 @@ export default({
           dispatch('updateMessage', {
             message: response.data.message,
             status: 'success',
-          });
+          }, { root: true });
         } else {
           $('#productsModal').modal('hide');
           dispatch('getProducts');
           dispatch('updateMessage', {
             message: response.data.message,
             status: 'danger',
-          });
+          }, { root: true });
         }
         // vm.products = response.data.products;
       });
@@ -172,14 +173,14 @@ export default({
           dispatch('updateMessage', {
             message: response.data.message,
             status: 'success',
-          });
+          }, { root: true });
         } else {
           $('#deleteModal').modal('hide');
           dispatch('getProducts');
           dispatch('updateMessage', {
             message: response.data.message,
             status: 'danger',
-          });
+          }, { root: true });
         }
       });
     },
@@ -200,17 +201,17 @@ export default({
           dispatch('updateMessage', {
             message: response.data.message,
             status: 'danger',
-          });
+          }, { root: true });
         }
       });
     },
     getOrders({ state, commit }, page) {
       const url = state.url.orders('page', page);
-      commit('LOADING', true);
+      commit('LOADING', true, { root: true });
       axios.get(url).then((response) => {
         commit('ORDERS', response.data.orders);
         commit('PAGINATION', response.data.pagination);
-        commit('LOADING', false);
+        commit('LOADING', false, { root: true });
       });
     },
     updateOrder({ state, dispatch }, {tempOrder, id}) {
@@ -222,24 +223,24 @@ export default({
           dispatch('updateMessage', {
             message: response.data.message,
             status: 'success',
-          });
+          }, { root: true });
         } else {
           $('#orderModal').modal('hide');
           dispatch('getOrders');
           dispatch('updateMessage', {
             message: response.data.message,
             status: 'danger',
-          });
+          }, { root: true });
         }
       });
     },
     getCoupons({ state, commit }, page) {
       const url = state.url.coupons('page', page);
-      commit('LOADING', true);
+      commit('LOADING', true, { root: true });
       axios.get(url).then((response) => {
         commit('COUPONS', response.data.coupons);
         commit('PAGINATION', response.data.pagination);
-        commit('LOADING', false);
+        commit('LOADING', false, { root: true });
       })
     },
     openCouponModal({ commit }, { isNew, item }) {
@@ -270,14 +271,14 @@ export default({
           dispatch('updateMessage', {
             message: response.data.message,
             status: 'success',
-          });
+          }, { root: true });
         } else {
           $('#couponsModal').modal('hide');
           dispatch('getCoupons');
           dispatch('updateMessage', {
             message: response.data.message,
             status: 'danger',
-          });
+          }, { root: true });
         }
       });
     },
@@ -290,14 +291,14 @@ export default({
           dispatch('updateMessage', {
             message: response.data.message,
             status: 'success',
-          });
+          }, { root: true });
         } else {
           $('#deleteModal').modal('hide');
           dispatch('getCoupons');
           dispatch('updateMessage', {
             message: response.data.message,
             status: 'danger',
-          });
+          }, { root: true });
         }
       })
     },

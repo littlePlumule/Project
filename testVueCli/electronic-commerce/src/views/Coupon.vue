@@ -145,7 +145,8 @@
 <script>
 import $ from 'jquery';
 import pagination from '../components/pagination';
-import { mapGetters, mapActions } from 'vuex';
+import { createNamespacedHelpers } from 'vuex';
+const { mapGetters, mapActions } = createNamespacedHelpers('admin');
 
 export default {
   components: {
@@ -160,13 +161,13 @@ export default {
   },
   methods: {
     getCoupons(page = 1) {
-      this.$store.dispatch('getCoupons', page);
+      this.$store.dispatch('admin/getCoupons', page);
     },
     openCouponModal(isNew, item) {
-      this.$store.dispatch('openCouponModal', {isNew, item});
+      this.$store.dispatch('admin/openCouponModal', {isNew, item});
     },
     openDelCouponModal(item) {
-      this.$store.dispatch('openDelCouponModal', item);
+      this.$store.dispatch('admin/openDelCouponModal', item);
     },
     ...mapActions(['updateCoupon', 'deleteCoupon']),
   },

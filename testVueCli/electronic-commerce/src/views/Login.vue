@@ -40,7 +40,7 @@ export default {
   methods: {
     signin() {
       let vm = this
-      this.$store.dispatch('signin', vm.user);
+      this.$store.dispatch('admin/signin', vm.user);
     },
   },
   props: {
