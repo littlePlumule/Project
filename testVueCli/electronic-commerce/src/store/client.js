@@ -131,7 +131,6 @@ export default({
       const url = state.url.orders('id', id);
       commit('LOADING', true, {root: true});
       axios.get(url).then((response) => {
-        console.log('getOrder', response)
         commit('ORDER', response.data.order);
         commit('LOADING', false, {root: true});
       });
@@ -140,7 +139,6 @@ export default({
       const url = state.url.orders('pay', id);
       commit('LOADING', true, {root: true});
       axios.post(url).then((response) => {
-        console.log('payOrder', response)
         if (response.data.success) {
           dispatch('getOrder', id);
         }
