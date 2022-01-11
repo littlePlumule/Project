@@ -15,7 +15,7 @@
 
         <div class="checkbox mb-3">
           <label>
-            <input type="checkbox" value="remember-me"> Remember me
+            <input type="checkbox" value="remember-me" v-model="user.saved"> Remember Account
           </label>
         </div>
         <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
@@ -26,22 +26,23 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from 'vuex';
+const { mapState, mapActions } = createNamespacedHelpers('admin');
 
 export default {
   name: 'HelloWorld',
   data() {
     return {
-      user: {
-        username:'',
-        password:'',
-      },
     };
   },
+  computed: {
+    ...mapState(['user']),
+  },
   methods: {
-    signin() {
-      let vm = this
-      this.$store.dispatch('admin/signin', vm.user);
-    },
+    ...mapActions(['signin']),
+  },
+  mounted() {
+    this.$store.commit('admin/USERNAME', JSON.parse(localStorage.getItem('saveAccount')) || '');
   },
   props: {
     msg: String

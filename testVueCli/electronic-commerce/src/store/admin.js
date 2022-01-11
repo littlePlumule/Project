@@ -58,6 +58,12 @@ export default({
         }
       }
     },
+    user: {
+      username:'',
+      password:'',
+      saved: true,
+    },
+    users:[],
     products: [],
     pagination: {},
     tempProducts: {},
@@ -68,6 +74,9 @@ export default({
     tempCoupons: {},
   },
   mutations: {
+    USERNAME(state, payload) {
+      state.user.username = payload;
+    },
     PRODUCTS(state, payload) {
       state.products = payload;
     },
@@ -91,9 +100,14 @@ export default({
     },
   },
   actions: {
-    signin({ state, dispatch }, user) {
+    signin({ state, dispatch }) {
+      if(state.user.saved) {
+        localStorage.setItem('saveAccount', JSON.stringify(state.user.username));
+      } else {
+        localStorage.removeItem('saveAccount');
+      }
       const api = state.url.account('signin');
-      axios.post(api, user).then((response) => {
+      axios.post(api, state.user).then((response) => {
         if (response.data.success) {
           const token = response.data.token;
           const expired = response.data.expired;
@@ -161,7 +175,6 @@ export default({
             status: 'danger',
           }, { root: true });
         }
-        // vm.products = response.data.products;
       });
     },
     deleteProducts({ state, dispatch }) {
