@@ -2,6 +2,7 @@ import axios from 'axios';
 import $ from 'jquery';
 
 export default({
+  namespaced: true,
   state: {
     url: {
       products(name, item) {
@@ -81,11 +82,11 @@ export default({
   actions: {
     getProducts({ state, commit }, page) {
       const url = state.url.products('page', page);
-      commit('LOADING', true);
+      commit('LOADING', true, {root: true});
       axios.get(url).then((response) => {
         commit('PRODUCTS', response.data.products);
         commit('PAGINATION', response.data.pagination);
-        commit('LOADING', false);
+        commit('LOADING', false, {root: true});
       });
     },
     getProduct({ state, commit }, id) {
@@ -112,39 +113,39 @@ export default({
     },
     getCart({ state, commit }) {
       const url = state.url.carts('get');
-      commit('LOADING', true);
+      commit('LOADING', true, {root: true});
       axios.get(url).then((response) => {
         commit('CART', response.data.data);
-        commit('LOADING', false);
+        commit('LOADING', false, {root: true});
       });
     },
     removeCartItem({ state, commit, dispatch }, id) {
       const url = state.url.carts('delete', id);
-      commit('LOADING', true);
+      commit('LOADING', true, {root: true});
       axios.delete(url).then(() => {
         dispatch('getCart');
       });
-      commit('LOADING', false);
+      commit('LOADING', false, {root: true});
     },
     getOrder({ state, commit }, id) {
       const url = state.url.orders('id', id);
-      commit('LOADING', true);
+      commit('LOADING', true, {root: true});
       axios.get(url).then((response) => {
         console.log('getOrder', response)
         commit('ORDER', response.data.order);
-        commit('LOADING', false);
+        commit('LOADING', false, {root: true});
       });
     },
     payOrder({ state, commit, dispatch }, id) {
       const url = state.url.orders('pay', id);
-      commit('LOADING', true);
+      commit('LOADING', true, {root: true});
       axios.post(url).then((response) => {
         console.log('payOrder', response)
         if (response.data.success) {
           dispatch('getOrder', id);
         }
       });
-      commit('LOADING', false);
+      commit('LOADING', false, {root: true});
     },
   },
   getters: {

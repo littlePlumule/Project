@@ -1,7 +1,5 @@
 <template>
   <div class="my-5 row justify-content-center">
-    <!-- loading -->
-    <loading :active.sync="isLoading"></loading>
     <form class="col-md-6" @submit.prevent="payOrder">
       <table class="table">
         <thead>
@@ -60,13 +58,13 @@
 
 <script>
 import $ from 'jquery';
-import { mapGetters } from 'vuex';
+import { createNamespacedHelpers } from 'vuex';
+const { mapGetters} = createNamespacedHelpers('client');
 
 export default {
   data() {
     return {
       orderId: '',
-      isLoading: false,
     };
   },
   computed: {
@@ -75,11 +73,11 @@ export default {
   methods: {
     getOrder() {
       let id = this.orderId;
-      this.$store.dispatch('getOrder', id);
+      this.$store.dispatch('client/getOrder', id);
     },
     payOrder() {
       let id = this.orderId;
-      this.$store.dispatch('payOrder', id);
+      this.$store.dispatch('client/payOrder', id);
     },
   },
   created() {

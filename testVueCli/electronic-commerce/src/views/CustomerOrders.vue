@@ -166,7 +166,8 @@
 <script>
 import $ from 'jquery';
 import pagination from '../components/pagination';
-import { mapGetters, mapActions } from 'vuex';
+import { createNamespacedHelpers } from 'vuex';
+const { mapGetters, mapActions } = createNamespacedHelpers('client');
 
 export default {
   name:'Dashboard',
@@ -193,7 +194,7 @@ export default {
       },
 
       set(val){
-        this.$store.commit('COUPON_CODE', val)
+        this.$store.commit('client/COUPON_CODE', val)
       }
     },
     ...mapGetters(['products', 'pagination', 'product', 'loadingItem', 'cart']),
@@ -201,16 +202,16 @@ export default {
   methods: {
     ...mapActions(['getCart', 'addCouponCode']),
     getProducts(page = 1) {
-      this.$store.dispatch('getProducts', page);
+      this.$store.dispatch('client/getProducts', page);
     },
     getProduct(id) {
-      this.$store.dispatch('getProduct', id);
+      this.$store.dispatch('client/getProduct', id);
     },
     addToCart(id, qty = 1) {
-      this.$store.dispatch('addToCart', {id, qty});
+      this.$store.dispatch('client/addToCart', {id, qty});
     },
     removeCartItem(id) {
-      this.$store.dispatch('removeCartItem', id);
+      this.$store.dispatch('client/removeCartItem', id);
     },
     createOrder() {
       const vm = this;
