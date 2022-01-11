@@ -194,7 +194,7 @@ export default {
       },
 
       set(val){
-        this.$store.commit('client/COUPON_CODE', val)
+        this.$store.commit('client/COUPON_CODE', val);
       }
     },
     ...mapGetters(['products', 'pagination', 'product', 'loadingItem', 'cart']),
