@@ -119,46 +119,57 @@
     </div>
     <!-- list -->
     <div class="my-5 row justify-content-center">
-      <form class="col-md-6" @submit.prevent="createOrder">
-        <div class="form-group">
-          <label for="useremail">Email</label>
-          <input type="email" class="form-control" name="email" id="useremail" :class="{'is-invalid': errors.has('email')}"
-            v-model="form.user.email" v-validate="'required|email'" placeholder="請輸入 Email">
-          <span class="text-danger" v-if="errors.has('email')">
-            {{ errors.first('email') }}
-          </span>
-        </div>
-      
-        <div class="form-group">
-          <label for="username">收件人姓名</label>
-          <input type="text" class="form-control" name="name" id="username" :class="{'is-invalid': errors.has('name')}"
-            v-model="form.user.name" v-validate="'required'" placeholder="輸入姓名">
-          <span class="text-danger" v-if="errors.has('name')">姓名欄位不得留空</span>
-        </div>
-      
-        <div class="form-group">
-          <label for="usertel">收件人電話</label>
-          <input type="tel" class="form-control" name="tel" id="usertel" :class="{'is-invalid': errors.has('tel')}"
-           v-validate="'required'" v-model="form.user.tel" placeholder="請輸入電話">
-          <span class="text-danger" v-if="errors.has('tel')">電話欄位不得留空</span>
-        </div>
-      
-        <div class="form-group">
-          <label for="useraddress">收件人地址</label>
-          <input type="text" class="form-control"  name="address" id="useraddress" :class="{'is-invalid': errors.has('address')}"
-           v-validate="'required'" v-model="form.user.address"
-            placeholder="請輸入地址">
-          <span class="text-danger" v-if="errors.has('address')">地址欄位不得留空</span>
-        </div>
-      
-        <div class="form-group">
-          <label for="comment">留言</label>
-          <textarea name="" id="comment" class="form-control" cols="30" rows="10" v-model="form.message"></textarea>
-        </div>
-        <div class="text-right">
-          <button class="btn btn-danger">送出訂單</button>
-        </div>
-      </form>
+      <validation-observer class="col-md-6" v-slot="{ invalid }">
+        <form @submit.prevent="createOrder">
+          <validation-provider rules="required|email" v-slot="{ errors, classes }">
+            <div class="form-group">
+              <!-- 輸入框 -->
+              <label for="email">Email</label>
+              <input id="email" type="email" name="email" v-model="form.user.email"
+                  class="form-control" :class="classes" placeholder="請輸入 Email">
+              <!-- 錯誤訊息 -->
+              <span class="invalid-feedback">{{ errors[0] }}</span>
+            </div>
+          </validation-provider>
+          <validation-provider rules="required" v-slot="{ errors, classes }">
+            <div class="form-group">
+              <!-- 輸入框 -->
+              <label for="username">收件人姓名</label>
+              <input id="username" type="text" name="name" v-model="form.user.name"
+                  class="form-control" :class="classes" placeholder="輸入姓名">
+              <!-- 錯誤訊息 -->
+              <span class="text-danger">{{ errors[0] }}</span>
+            </div>
+          </validation-provider>
+          <validation-provider rules="required|phone" v-slot="{ errors, classes }">
+            <div class="form-group">
+              <!-- 輸入框 -->
+              <label for="usertel">收件人電話</label>
+              <input id="usertel" type="tel" name="telphone" v-model="form.user.tel"
+                  class="form-control" :class="classes" placeholder="請輸入電話">
+              <!-- 錯誤訊息 -->
+              <span class="text-danger">{{ errors[0] }}</span>
+            </div>
+          </validation-provider>
+          <validation-provider rules="required|min:8" v-slot="{ errors, classes }">
+            <div class="form-group">
+              <label for="useraddress">收件人地址</label>
+              <input type="text" class="form-control"  name="address" id="useraddress" :class="classes"
+                v-model="form.user.address" placeholder="請輸入地址">
+              <span class="text-danger">{{errors[0]}}</span>
+            </div>
+          </validation-provider>
+          <validation-provider rules="">
+            <div class="form-group">
+              <label for="comment">留言</label>
+              <textarea name="" id="comment" class="form-control" cols="30" rows="10" v-model="form.message"></textarea>
+            </div>
+          </validation-provider>
+          <div class="text-right">
+            <button class="btn btn-danger" :disabled="invalid">送出訂單</button>
+          </div>
+        </form>
+      </validation-observer>
     </div>
   </div>
 </template>
@@ -167,21 +178,12 @@
 import $ from 'jquery';
 import pagination from '../components/pagination';
 import { createNamespacedHelpers } from 'vuex';
-const { mapGetters, mapActions } = createNamespacedHelpers('client');
+const { mapState, mapGetters, mapActions } = createNamespacedHelpers('client');
 
 export default {
   name:'Dashboard',
   data() {
     return {
-      form: {
-        user: {
-          name: '',
-          email: '',
-          tel: '',
-          address: '',
-        },
-        message: '',
-      },
     };
   },
   components: {
@@ -197,10 +199,11 @@ export default {
         this.$store.commit('client/COUPON_CODE', val);
       }
     },
+    ...mapState(['form']),
     ...mapGetters(['products', 'pagination', 'product', 'loadingItem', 'cart']),
   },
   methods: {
-    ...mapActions(['getCart', 'addCouponCode']),
+    ...mapActions(['getCart', 'addCouponCode', 'createOrder']),
     getProducts(page = 1) {
       this.$store.dispatch('client/getProducts', page);
     },
@@ -212,37 +215,6 @@ export default {
     },
     removeCartItem(id) {
       this.$store.dispatch('client/removeCartItem', id);
-    },
-    createOrder() {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/order`;
-      const order = vm.form;
-      vm.$validator.validate().then(valid => {
-        if (valid) {
-          vm.$store.dispatch('updateLoading', true);
-          vm.$http.post(url, {data: order}).then((response) => {
-            // vm.getCart();
-            if (response.data.success) {
-              vm.$store.dispatch('updateMessage', {
-                message: response.data.message,
-                status: 'success',
-              });
-              vm.$router.push(`/customer_checkout/${response.data.orderId}`);
-            } else {
-              vm.$store.dispatch('updateMessage', {
-                message: response.data.message,
-                status: 'danger',
-              });
-            }
-            vm.$store.dispatch('updateLoading', false);
-          });
-        } else {
-          vm.$store.dispatch('updateMessage', {
-                message: '欄位不得為空',
-                status: 'danger',
-              });
-        }
-      });
     },
   },
   created() {

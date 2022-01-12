@@ -1,5 +1,6 @@
 import axios from 'axios';
 import $ from 'jquery';
+import router from '../router';
 
 export default({
   namespaced: true,
@@ -39,6 +40,8 @@ export default({
             return `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/order/${item}`;
           case 'pay':
             return `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/pay/${item}`;
+          case 'create':
+            return `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/order`;
         }
       },
     },
@@ -53,6 +56,15 @@ export default({
     order: {
       products: [],
       user: {},
+    },
+    form: {
+      user: {
+        name: '',
+        email: '',
+        tel: '',
+        address: '',
+      },
+      message: '',
     },
   },
   mutations: {
@@ -166,6 +178,25 @@ export default({
         }
       });
       commit('LOADING', false, { root: true });
+    },
+    createOrder({ state, dispatch}) {
+      const url = state.url.orders('create');
+      const order = state.form;
+      axios.post(url, {data: order}).then((response) => {
+        console.log(response)
+        if (response.data.success) {
+          dispatch('updateMessage', {
+            message: response.data.message,
+            status: 'success',
+          }, { root: true });
+          router.push(`/customer_checkout/${response.data.orderId}`);
+        } else {
+          dispatch('updateMessage', {
+            message: response.data.message,
+            status: 'danger',
+          }, { root: true });
+        }
+      });
     },
   },
   getters: {
