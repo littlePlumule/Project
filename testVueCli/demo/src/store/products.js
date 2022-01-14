@@ -6,6 +6,14 @@ export default{
   // namespaced 將所有都改為區域變數
   namespaced: true,
   state: {
+    url: {
+      products(name) {
+        switch (name) {
+          case 'getAll':
+            return `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`;
+        }
+      }
+    },
     products: [],
     categories: [],    
   },
@@ -22,13 +30,13 @@ export default{
     },
   },
   actions: {
-    getProducts(context) {
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`;
-      context.commit('LOADING', true, { root: true });
+    getProducts({ state, commit }) {
+      const url = state.url.products('getAll');
+      commit('LOADING', true, { root: true });
       axios.get(url).then((response) => {
-        context.commit('PRODUCTS', response.data.products);
-        context.commit('CATEGORIES', response.data.products);
-        context.commit('LOADING', false, { root: true });
+        commit('PRODUCTS', response.data.products);
+        commit('CATEGORIES', response.data.products);
+        commit('LOADING', false, { root: true });
       });
     },
   },

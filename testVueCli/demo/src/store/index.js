@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import productsModules from './products';
-import cartModules from './cart';
-import loadingModules from './loading';
+import products from './products';
+import cart from './cart';
+import loading from './loading';
 
 Vue.use(Vuex);
 
@@ -16,9 +16,9 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
-    productsModules,
-    cartModules,
-    loadingModules,
+    products,
+    cart,
+    loading,
   },
   getters: {
   }

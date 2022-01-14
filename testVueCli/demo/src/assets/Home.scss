@@ -1,0 +1,15 @@
+body{
+  .main-content {
+    min-height: calc(100vh - 56px - 176px)
+  }
+  .box-shadow {
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, .05);
+    transition: .3s linear;
+  }
+  .box-shadow:hover {
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, .08);
+  }
+  .alert-rounded {
+    border-radius: 50px;
+  }
+}

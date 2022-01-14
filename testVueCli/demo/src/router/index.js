@@ -5,9 +5,21 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '*',
+    redirect: {
+      name: 'Home',
+    },
+  },
+  {
     path: '/',
-    name: 'Home',
-    component: () => import('../views/Home.vue')
+    component: () => import('../components/Dashboard.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Home',
+        component: () => import('../views/Home.vue')
+      },
+    ],
   },
 ]
 

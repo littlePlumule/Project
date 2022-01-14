@@ -69,7 +69,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { createNamespacedHelpers } from 'vuex'
+const { mapGetters, mapActions } = createNamespacedHelpers('products')
 
 export default {
   name: 'Home',
@@ -89,12 +90,12 @@ export default {
       }
       return this.products;
     },
-    ...mapGetters('productsModules', ['categories', 'products'])
+    ...mapGetters(['categories', 'products'])
   },
   methods: {
-    ...mapActions('productsModules', ['getProducts']),
+    ...mapActions(['getProducts']),
     addtoCart(id, qty = 1) {
-      this.$store.dispatch('cartModules/addtoCart', { id, qty });
+      this.$store.dispatch('cart/addtoCart', { id, qty });
     },
   },
   created() {

@@ -1,0 +1,28 @@
+body{
+  .jumbotron-bg {
+    /* banners.png */
+    background: url('https://images.unsplash.com/photo-1477901492169-d59e6428fc90?w=1350');
+    background-size: cover;
+    background-position: center center;
+    min-height: 400px;
+  }
+  /* 半透明背景 */
+  .bg-lighter {
+    background-color: rgba(255, 255, 255, .45);
+  }
+  /* 購物車按鈕 */
+  .btn-cart {
+    background-color: transparent;
+    position: relative;
+  }
+  /* 購物車按鈕定位 */
+  .btn-cart .badge {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+  }
+  .dropdown-menu-right {
+    right: 0;
+    left: auto;
+  }
+}
