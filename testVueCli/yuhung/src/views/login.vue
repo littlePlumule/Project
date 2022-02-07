@@ -1,21 +1,23 @@
 <template>
-  <div class="login">
-    <form action="" class="form">
-      <h2>會員登入</h2>
-      <div class="group">
-        <label for="user_id">帳號</label>
-        <input type="text" id="user_id">
-      </div>
-      <div class="group">
-        <label for="user_password">密碼</label>
-        <input type="password" id="user_password">
-      </div>
-      <div class="btn-group">
-        <button class="btn">登入</button>
-        <button class="btn">取消</button>
-      </div>
-    </form>
+  <div class="wrap">
+    <div class="login">
+      <form action="" class="form">
+        <h2>會員登入</h2>
+        <div class="group">
+          <label for="user_id">帳號</label>
+          <input type="text" id="user_id">
+        </div>
+        <div class="group">
+          <label for="user_password">密碼</label>
+          <input type="password" id="user_password">
+        </div>
+        <div class="btn-group">
+          <button class="btn">登入</button>
+          <button class="btn">取消</button>
+        </div>
+      </form>
     </div>
+  </div>
 </template>
 
 <script>
@@ -36,8 +38,9 @@ export default {
     height: 100%;
   }
 
-  body {
+  .wrap {
     // background: url("../assets/image/login.jpg") no-repeat center center / cover;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;

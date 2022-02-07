@@ -26,7 +26,7 @@
             </li>
             <li>
               <router-link to="/login">
-                <i class="fas fa-user-cog"></i>
+                <i class="fas fa-user"></i>
               </router-link>
             </li>
           </ul>

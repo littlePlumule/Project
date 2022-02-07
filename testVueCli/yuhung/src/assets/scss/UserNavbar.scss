@@ -69,8 +69,8 @@
     }
     
     .wrap {
-      @media (max-width:1260px){
-        justify-content: center;
+      @media (max-width:1050px){
+        justify-content: flex-end;
       }
       display: flex;
       justify-content: space-between;
@@ -78,12 +78,12 @@
       max-height: 85px;
       width: 100%;
       .main-nav {
-        @media (max-width:1260px){
+        @media (max-width:1050px){
           // display: none;
           position:absolute;
           top: 85px;
           display: block;
-          width: 80%;
+          width: 50%;
           height: 100vh;
           right: -100%;
           transition: .3s;
@@ -93,8 +93,7 @@
         max-height: 85px;
         
         a {
-          @media (max-width:1260px){
-            
+          @media (max-width:1050px){
           backdrop-filter: blur(3px);
           background-color: rgba(221,221,221,.3);
           }
@@ -108,6 +107,9 @@
             @media (max-width:1260px){
               text-align: center;
               width: 100%;
+              // border-bottom: 1px solid #fff
+            }
+            @media (max-width:1050px){
               border-bottom: 1px solid #fff
             }
             align-items: center;
@@ -119,8 +121,11 @@
             text-align: center;
 
             &:before {
-              @media (max-width:1260px){
+              @media (max-width:1050px){
                 display: none;
+              }
+              @media (max-width:1260px){
+                transform: skew(0deg);
               }
               position: absolute;
               z-index: -1;
@@ -131,8 +136,15 @@
             }
 
             &:after {
-              @media (max-width:1260px){
+              @media (max-width:1050px){
                 display: none;
+              }
+              @media (max-width:1260px){
+                transform: skew(0deg);
+                left: 0;
+                right: 0;
+                height: 0;
+                bottom: 0;
               }
               content: '';
               position: absolute;
@@ -175,7 +187,7 @@
       }
     }
     .menu__btn {
-      @media (max-width:1260px){
+      @media (max-width:1050px){
         display: inline;
       }
       display: none;
