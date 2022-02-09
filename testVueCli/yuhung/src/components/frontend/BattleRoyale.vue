@@ -11,18 +11,18 @@
   
 </template>
 <script>
-import banner2 from '../../assets/image/banner2.jpg';
-import banner3 from '../../assets/image/banner3.jpg';
-import banner4 from '../../assets/image/banner4.jpg';
-import banner5 from '../../assets/image/banner5.jpg';
+import BattleRoyale from '../../assets/image/BattleRoyale.jpg';
+import BattleRoyale2 from '../../assets/image/BattleRoyale2.jpg';
+import BattleRoyale3 from '../../assets/image/BattleRoyale3.jpg';
+import BattleRoyale4 from '../../assets/image/BattleRoyale4.jpg';
 export default {
   data() {
     return {
       carousel: [
-        banner2,
-        banner3,
-        banner4,
-        banner5,
+        BattleRoyale,
+        BattleRoyale2,
+        BattleRoyale3,
+        BattleRoyale4,
       ],
       swiperOption: {
         pagination: {
@@ -34,7 +34,6 @@ export default {
       }
     }
   },
-  
 };
 </script>
 
