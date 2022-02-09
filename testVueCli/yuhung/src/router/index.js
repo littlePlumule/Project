@@ -6,12 +6,22 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    component: () => import('../components/Dashboard.vue'),
+    component: () => import('../components/frontend/Dashboard.vue'),
     children: [
       {
         path: '',
-        name: 'Home',
-        component: () => import('../views/Home.vue'),
+        name: '首頁',
+        component: () => import('../views/frontend/Home.vue'),
+      },
+      {
+        path: 'about',
+        name: '關於',
+        component: () => import('../views/frontend/About.vue'),
+      },
+      {
+        path: 'products',
+        name: '商店',
+        component: () => import('../views/frontend/Products.vue'),
       },
     ]
   },
@@ -20,14 +30,6 @@ const routes = [
     name: 'Login',
     component: () => import('../views/login.vue')
   },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
 ]
 
 const router = new VueRouter({

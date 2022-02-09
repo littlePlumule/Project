@@ -1,21 +1,24 @@
 <template>
-  <div class="wrap">
-    <div class="login">
-      <form action="" class="form">
-        <h2>會員登入</h2>
-        <div class="group">
-          <label for="user_id">帳號</label>
-          <input type="text" id="user_id">
-        </div>
-        <div class="group">
-          <label for="user_password">密碼</label>
-          <input type="password" id="user_password">
-        </div>
-        <div class="btn-group">
-          <button class="btn">登入</button>
-          <button class="btn">取消</button>
-        </div>
-      </form>
+  <div>
+    <router-link :to="'/'" replace class="home"><i class="fas fa-home fa-3x"></i></router-link>
+    <div class="wrap">
+      <div class="login">
+        <form action="" class="form">
+          <h2>會員登入</h2>
+          <div class="group">
+            <label for="user_id">帳號</label>
+            <input type="text" id="user_id">
+          </div>
+          <div class="group">
+            <label for="user_password">密碼</label>
+            <input type="password" id="user_password">
+          </div>
+          <div class="btn-group">
+            <button class="btn">登入</button>
+            <button class="btn">取消</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -26,7 +29,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   * {
     margin: 0;
     padding: 0;
@@ -38,8 +41,23 @@ export default {
     height: 100%;
   }
 
+  .home {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+  }
+
+  .home i {
+    color:#fff;
+  }
+
   .wrap {
     // background: url("../assets/image/login.jpg") no-repeat center center / cover;
+    margin: auto;
+    background: url('../assets/image/banner.jpg') no-repeat center center  / cover;
+    background-color: rgba(221, 221, 221, .6);
+    background-blend-mode: multiply;
+    background-attachment: fixed;
     height: 100vh;
     display: flex;
     justify-content: center;

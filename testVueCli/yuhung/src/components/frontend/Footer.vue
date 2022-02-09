@@ -9,5 +9,5 @@
   </div>
 </template>
 
-<style lang="scss" scoped src="../assets/scss/UserFooter.scss">
+<style lang="scss" scoped src="../../assets/scss/UserFooter.scss">
 </style>

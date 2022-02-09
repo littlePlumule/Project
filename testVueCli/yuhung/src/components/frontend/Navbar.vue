@@ -4,14 +4,22 @@
     <header class="main-header">
       <div class="container">
         <router-link to="/" class="logo">
-          <img src="../assets/image/logo.png" alt="apex logo">
+          <img src="../../assets/image/logo.png" alt="apex logo">
         </router-link>
         <div class="wrap">
           <nav class="main-nav">
-            <a href="#"><span>關於</span></a>
-            <a href="#"><span>商店</span></a>
-            <a href="#"><span>活動</span></a>
-            <a href="#"><span>訂單</span></a>
+            <router-link to="/about">
+              <span>關於</span>
+            </router-link>
+            <router-link to="/products">
+              <span>活動</span>
+            </router-link>
+            <router-link to="/products">
+              <span>商店</span>
+            </router-link>
+            <router-link to="/products">
+              <span>訂單</span>
+            </router-link>
           </nav>
           <ul class="list">
             <li>
@@ -37,5 +45,5 @@
   </div>
 </template>
 
-<style lang="scss" scoped src="../assets/scss/UserNavbar.scss">
+<style lang="scss" scoped src="../../assets/scss/UserNavbar.scss">
 </style>
