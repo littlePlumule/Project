@@ -5,6 +5,12 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '*',
+    redirect: {
+      name: '404',
+    },
+  },
+  {
     path: '/',
     component: () => import('../components/frontend/Dashboard.vue'),
     children: [
@@ -17,6 +23,18 @@ const routes = [
         path: 'about',
         name: '關於',
         component: () => import('../views/frontend/About.vue'),
+        children: [
+          {
+            path: 'legends',
+            name: '英雄',
+            component: () => import('../views/frontend/legends.vue'),
+          },
+          {
+            path: 'maps',
+            name: '地圖',
+            component: () => import('../views/frontend/maps.vue'),
+          },
+        ]
       },
       {
         path: 'products',
@@ -28,7 +46,12 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('../views/login.vue')
+    component: () => import('../views/login.vue'),
+  },
+  {
+    path: '/404',
+    name: '404',
+    component: () => import('../views/NotFound.vue'),
   },
 ]
 
