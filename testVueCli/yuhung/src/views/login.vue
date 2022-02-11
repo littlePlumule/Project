@@ -54,7 +54,7 @@ export default {
   .wrap {
     // background: url("../assets/image/login.jpg") no-repeat center center / cover;
     margin: auto;
-    background: url('../assets/image/banner.jpg') no-repeat center center  / cover;
+    background: url('../assets/image/Arenas.jpg') no-repeat center center  / cover;
     background-color: rgba(221, 221, 221, .6);
     background-blend-mode: multiply;
     background-attachment: fixed;
