@@ -12,7 +12,7 @@
               <router-link to="/about/legends">
                 <span>關於</span>
               </router-link>
-              <router-link to="/products">
+              <router-link to="/activity">
                 <span>活動</span>
               </router-link>
               <router-link to="/products">
