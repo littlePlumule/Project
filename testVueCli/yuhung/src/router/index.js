@@ -20,6 +20,11 @@ const routes = [
         component: () => import('../views/frontend/Home.vue'),
       },
       {
+        path: 'activity',
+        name: '活動',
+        component: () => import('../views/frontend/Activity.vue'),
+      },
+      {
         path: 'about',
         name: '關於',
         component: () => import('../views/frontend/About.vue'),
