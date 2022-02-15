@@ -3,9 +3,19 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+import 'swiper/swiper-bundle.css';
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+import { Swiper, SwiperSlide } from 'swiper/vue';
+
+Vue.use(VueAwesomeSwiper)
+
 Vue.config.productionTip = false
 
 new Vue({
+  components: {
+    Swiper,
+    SwiperSlide,
+  },
   router,
   store,
   render: h => h(App)
