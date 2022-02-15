@@ -7,6 +7,8 @@
       <img :src="item" class="img-cover w-100 mh-auto px-5">
     </swiper-slide>
     <div class="swiper-pagination" slot="pagination"></div>
+    <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
+    <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
   </swiper>
   
 </template>
@@ -32,6 +34,10 @@ export default {
         pagination: {
           el:'.swiper-pagination',
           clickable :true,
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
         },
         loop: true,
         autoplay:{disableOnInteraction: false,},
